@@ -26,6 +26,42 @@ router.post(CONFIG.POST_PAGE, function(req, res) {
     oldCsgo = csgo;
     csgo = new csgoModel(req.body);
     csgo.sortPlayersByTeam();
+    if(csgo.isStatusChanged(oldCsgo)){
+      switch (csgo.round.phase) {
+        case 'freezetime':
+          console.log('Round '+csgo.map.round+' is on buytime.');
+          console.log(csgo.logWinningTeam());
+          break;
+        case 'live':
+          console.log('Round '+csgo.map.round+' is now live.');
+          break;
+        case 'over':
+          // GSI already increments the round number when the round is over. no, please.
+          console.log('Round '+(csgo.map.round-1)+' just ended. '+csgo.round.winTeam+ ' won the round.');
+          break;
+        default:
+          console.log('Cannot get phase');
+          break;
+      }
+    }
+
+    if(csgo.isBombStatusChanged(oldCsgo)){
+      switch (csgo.round.bomb) {
+        case 'planted':
+          console.log('Bomb has been planted.');
+          break;
+        case 'exploded':
+          console.log('Bomb exploded.');
+          break;
+        case 'defused':
+          // GSI already increments the round number when the round is over. no, please.
+          console.log('Bomb has been defused');
+          break;
+        default:
+          // console.log('Bomb event : '+csgo.round.bomb);
+          break;
+      }
+    }
     // console.log(csgo.map);
     res.send('');
   } catch (e) {
