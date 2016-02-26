@@ -1,24 +1,20 @@
 var CONFIG = require('../config/config');
 
 function CsgoData(body) {
-  var data = new Object();
-  data.provider = Provider(body.provider);
-  data.map = Map(body.map);
-  data.ct = Team(body.map.team_ct, 'CT', 'CT');
-  data.t = Team(body.map.team_t, 'T', 'T');
-  data.round = Round(body.round);
-  data.screenPlayer = Player(body.player);
+  this.provider = Provider(body.provider);
+  this.map = Map(body.map);
+  this.ct = Team(body.map.team_ct, 'CT', 'CT');
+  this.t = Team(body.map.team_t, 'T', 'T');
+  this.round = Round(body.round);
+  this.screenPlayer = Player(body.player);
 
-  data.players = [];
+  this.players = [];
   if (body.hasOwnProperty('allplayers')) {
     for (var key in body.allplayers) {
-      data.players.push({
-        [key]: Player(body.allplayers[key], key)
-      })
+      this.players.push(Player(body.allplayers[key], key));
     }
   }
-  data.auth = Auth(body.auth);
-  return data;
+  this.auth = Auth(body.auth);
 }
 
 function Provider(provider) {
@@ -50,37 +46,25 @@ function Player(player, steamid) {
   var data = new Object();
   data.steamid = player.steamid || steamid;
   data.name = player.name;
-  data.team = player.team;
-  if( player.hasOwnProperty('activity')){
-    data.activity = MatchStats(player.activity);
+  data.team = player.team || 'SPEC';
+  if (player.hasOwnProperty('activity')) {
+    data.activity = player.activity;
   }
-  data.state = State(player.state);
-  if( player.hasOwnProperty('match_stats')){
-    data.matchStats = MatchStats(player.match_stats);
+  data.health = player.state.health;
+  data.armor = player.state.armor;
+  data.helmet = player.state.helmet;
+  data.flashed = player.state.flashed;
+  data.burning = player.state.burning;
+  data.money = player.state.burning;
+  data.roundKills = player.state.round_kills;
+  data.roundKillsHS = player.state.round_killhs;
+  if (player.hasOwnProperty('match_stats')) {
+    data.kills = player.match_stats.kills;
+    data.assists = player.match_stats.assists;
+    data.deaths = player.match_stats.deaths;
+    data.mvps = player.match_stats.mvps;
+    data.score = player.match_stats.score;
   }
-  return data;
-}
-
-function State(state) {
-  var data = new Object();
-  data.health = state.health;
-  data.armor = state.armor;
-  data.helmet = state.helmet;
-  data.flashed = state.flashed;
-  data.burning = state.burning;
-  data.money = state.burning;
-  data.roundKills = state.round_kills;
-  data.roundKillsHS = state.round_killhs;
-  return data;
-}
-
-function MatchStats(matchStats) {
-  var data = new Object();
-  data.kills = matchStats.kills;
-  data.assists = matchStats.assists;
-  data.deaths = matchStats.deaths;
-  data.mvps = matchStats.mvps;
-  data.score = matchStats.score;
   return data;
 }
 
@@ -96,6 +80,12 @@ function Auth(auth) {
   var data = new Object();
   data.token = auth.token;
   return data;
+}
+
+CsgoData.prototype.sortPlayersByTeam = function() {
+  this.players.sort(function(a, b) {
+    return a.team.localeCompare(b.team);
+  });
 }
 
 module.exports = CsgoData;

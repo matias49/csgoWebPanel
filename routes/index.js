@@ -2,6 +2,7 @@ var express = require('express');
 var headersModel = require('../models/headers');
 var csgoModel = require('../models/csgo');
 var router = express.Router();
+var oldCsgo, csgo;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -12,18 +13,21 @@ router.get('/', function(req, res, next) {
 
 router.post('/csgo', function(req, res) {
   try {
-    // Objects initialization
+    // Headers verification
     // The data comes already parsed (application/json)
     headers = new headersModel(req.headers);
-    // Sender verification
     if (!headers.isValidGlobal()) {
       console.log('NOK CS.');
       return null;
     }
     console.log('OK CS.');
+    // We keep the last information given to compare with the new one
+    oldCsgo = csgo;
     csgo = new csgoModel(req.body);
 
-    console.log(csgo.players);
+    csgo.sortPlayersByTeam();
+
+    // console.log(csgo.screenPlayer.name + " is on team "+ csgo.screenPlayer.team);
     res.send('');
   } catch (e) {
     console.log(e);
