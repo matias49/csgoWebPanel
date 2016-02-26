@@ -10,22 +10,17 @@ router.get('/', function(req, res, next) {
 router.post('/csgo', function(req,res){
 
   // Objects initialization
+  // The data comes already parsed (application/json)
   headers = new headersModel(req.headers);
 
   // Sender verification
   if(!headers.isValidGlobal()){
     console.log('NOK CS.');
-
     return null;
   }
   console.log('OK CS.');
-  //console.log(req);
+  // console.log(req.body.player);
   res.send('');
-
-  //if(req.headers['user-agent'])
-  //for (var key in req.body.allplayers){
-  //  console.log(req.body.allplayers[key]);
-  //}
 })
 
 module.exports = router;

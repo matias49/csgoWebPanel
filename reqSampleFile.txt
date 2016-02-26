@@ -706,3 +706,60 @@ IncomingMessage {
 POST /csgo 200 78.770 ms - 0
 
 Process finished with exit code 130
+
+allpayers.steamid :
+{ name: 'Elmer',
+  team: 'T',
+  state:
+   { health: 100,
+     armor: 0,
+     helmet: false,
+     flashed: 0,
+     burning: 0,
+     money: 800,
+     round_kills: 0,
+     round_killhs: 0 },
+  match_stats: { kills: 0, assists: 0, deaths: 0, mvps: 0, score: 0 } }
+
+player {
+  steamid: '76561198004604534',
+  name: 'Matias49',
+  activity: 'menu'
+}
+
+OR
+{
+  steamid: '76561198004604534',
+  clan: 'ⓄⒷBlast',
+  name: 'Matias49',
+  activity: 'playing',
+  state: {
+    health: 0,
+    armor: 0,
+    helmet: false,
+    flashed: 0,
+    smoked: 0,
+    burning: 0,
+    money: 800,
+    round_kills: 0,
+    round_killhs: 0
+  }
+}
+OR
+{
+  steamid: '2',
+  name: 'Frank',
+  team: 'T',
+  activity: 'playing',
+  state: {
+    health: 100,
+    armor: 0,
+    helmet: false,
+    flashed: 0,
+    smoked: 0,
+    burning: 0,
+    money: 1100,
+    round_kills: 1,
+    round_killhs: 0
+  }
+}

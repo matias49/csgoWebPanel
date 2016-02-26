@@ -7,7 +7,7 @@ var CONFIG = require('../config/config');
 function Headers(header){
     this.userAgent = header['user-agent'];
     this.contentType = header['content-type'];
-    this.ip = getIp(header['host']);
+    this.ip = getIp(header.host);
 }
 
 /**
