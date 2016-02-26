@@ -2,6 +2,7 @@ var express = require('express');
 var headersModel = require('../models/headers');
 var csgoModel = require('../models/csgo');
 var router = express.Router();
+var CONFIG = require('../config/config');
 var oldCsgo, csgo;
 
 /* GET home page. */
@@ -11,7 +12,7 @@ router.get('/', function(req, res, next) {
   });
 });
 
-router.post('/csgo', function(req, res) {
+router.post(CONFIG.POST_PAGE, function(req, res) {
   try {
     // Headers verification
     // The data comes already parsed (application/json)
@@ -24,10 +25,8 @@ router.post('/csgo', function(req, res) {
     // We keep the last information given to compare with the new one
     oldCsgo = csgo;
     csgo = new csgoModel(req.body);
-
     csgo.sortPlayersByTeam();
-
-    // console.log(csgo.screenPlayer.name + " is on team "+ csgo.screenPlayer.team);
+    // console.log(csgo.map);
     res.send('');
   } catch (e) {
     console.log(e);

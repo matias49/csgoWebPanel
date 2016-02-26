@@ -44,7 +44,7 @@ function Map(map) {
   data.mode = map.mode;
   data.name = map.name;
   data.phase = map.phase;
-  data.round = map.round;
+  data.round = map.round+1;
   return data;
 }
 
@@ -55,6 +55,8 @@ function Map(map) {
 function Round(round) {
   var data = new Object();
   data.phase = round.phase;
+  data.bomb = round.bomb || '';
+  data.winTeam = round.win_team || '';
   return data;
 }
 
@@ -123,5 +125,25 @@ CsgoData.prototype.sortPlayersByTeam = function() {
     return a.team.localeCompare(b.team);
   });
 }
+
+CsgoData.prototype.isStatusChanged = function(oldData) {
+  return this.round.phase !== oldData.round.phase;
+};
+
+CsgoData.prototype.isBombStatusChanged = function (oldData) {
+  return this.round.bomb !== oldData.round.bomb;
+};
+
+CsgoData.prototype.logWinningTeam = function () {
+  if (this.t.score > this.ct.score){
+    return this.t.name+" is winning against "+this.ct.name+" "+this.t.score+"-"+this.ct.score;
+  }
+  else if (this.t.score === this.ct.score){
+    return "Game is tied "+this.t.score+"-"+this.ct.score;
+  }
+  else {
+    return this.ct.name+" is winning against "+this.t.name+" "+this.ct.score+"-"+this.t.score;
+  }
+};
 
 module.exports = CsgoData;

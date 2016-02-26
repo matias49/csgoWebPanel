@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+var CONFIG = require('../config/config');
+
 /**
  * Module dependencies.
  */
@@ -86,5 +88,6 @@ function onListening() {
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  // debug('Listening on ' + bind);
+  console.log('Server ready to get informations on '+addr.address+ ":"+addr.port+CONFIG.POST_PAGE);
 }
