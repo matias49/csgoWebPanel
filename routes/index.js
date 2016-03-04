@@ -18,6 +18,11 @@ router.get('/', function(req, res, next) {
   });
 });
 
+router.get('/demo', function(req, res, next) {
+  res.render('demo');
+});
+
+
 router.post(CONFIG.POST_PAGE, function(req, res) {
   try {
     // Headers verification
@@ -62,10 +67,14 @@ router.post(CONFIG.POST_PAGE, function(req, res) {
       if (csgo.isBombStatusChanged(oldCsgo)) {
         if (csgo.round.bomb === 'planted') {
           console.log('Bomb has been planted.');
+          io.emit('info', {'text' : 'Bomb has been planted.'});
+
         } else if (csgo.round.bomb === 'defused') {
           console.log('Bomb has been defused');
+          io.emit('info', {'text' : 'Bomb has been defused.'});
         } else if (csgo.round.bomb === '' && oldCsgo.round.bomb === 'planted') {
           console.log('Bomb might exploded.');
+          io.emit('info', {'text' : 'Bomb might exploded.'});
         } else if (csgo.round.bomb === '') {
           console.log('no info');
         } else {
