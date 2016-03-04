@@ -5,6 +5,12 @@ var router = express.Router();
 var CONFIG = require('../config/config');
 var oldCsgo, csgo;
 
+var io = require('socket.io')(3001);
+
+io.on('connection', function (socket) {
+    console.log('new user');
+});
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', {
@@ -35,14 +41,17 @@ router.post(CONFIG.POST_PAGE, function(req, res) {
         switch (csgo.round.phase) {
           case 'freezetime':
             console.log('Round ' + csgo.map.round + ' is on buytime.');
+            io.emit('info', {'text' : 'Round ' + csgo.map.round + ' is on buytime.'});
             console.log(csgo.logWinningTeam());
             break;
           case 'live':
             console.log('Round ' + csgo.map.round + ' is now live.');
+            io.emit('info', {'text' : 'Round ' + csgo.map.round + ' is now live.'});
             break;
           case 'over':
             // GSI already increments the round number when the round is over. no, please.
             console.log('Round ' + (csgo.map.round - 1) + ' just ended. ' + csgo.getWinnerTeamName() + ' won the round with ' + csgo.getTeamPlayersAlive(csgo.getWinnerTeamSide()) + ' players alive.');
+            io.emit('info', {'text' : 'Round ' + (csgo.map.round - 1) + ' just ended. ' + csgo.getWinnerTeamName() + ' won the round with ' + csgo.getTeamPlayersAlive(csgo.getWinnerTeamSide()) + ' players alive.'});
             break;
           default:
             console.log('Cannot get phase');

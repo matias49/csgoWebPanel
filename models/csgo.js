@@ -126,12 +126,20 @@ function Auth(auth) {
   return data;
 }
 
+// FUNCTIONS
+
 /**
  * Sorting all the players array by their team
  */
 CsgoData.prototype.sortPlayersByTeam = function() {
   this.players.sort(function(a, b) {
     return a.team.localeCompare(b.team);
+  });
+}
+
+CsgoData.prototype.sortPlayersBySteamId = function() {
+  this.players.sort(function(a, b) {
+    return a.steamid.localeCompare(b.steamid);
   });
 }
 
