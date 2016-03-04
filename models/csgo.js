@@ -6,10 +6,16 @@ var CONFIG = require('../config/config');
  */
 function CsgoData(body) {
   this.provider = Provider(body.provider);
-  this.map = Map(body.map);
-  this.ct = Team(body.map.team_ct, 'CT', 'CT');
-  this.t = Team(body.map.team_t, 'T', 'T');
-  this.round = Round(body.round);
+  // Game can be on 'menu' activity or 'warmup' phase. On these cases there is no Map or Round data.
+  if (body.hasOwnProperty('map')) {
+    this.map = Map(body.map);
+    this.team={};
+    this.team.ct = Team(body.map.team_ct, 'CT', 'CT');
+    this.team.t = Team(body.map.team_t, 'T', 'T');
+  }
+  if (body.hasOwnProperty('round')) {
+    this.round = Round(body.round);
+  }
   this.screenPlayer = Player(body.player);
   // We store all the players on an array
   this.players = [];
@@ -74,15 +80,17 @@ function Player(player, steamid) {
   if (player.hasOwnProperty('activity')) {
     data.activity = player.activity;
   }
-  // We flat the state data
-  data.health = player.state.health;
-  data.armor = player.state.armor;
-  data.helmet = player.state.helmet;
-  data.flashed = player.state.flashed;
-  data.burning = player.state.burning;
-  data.money = player.state.burning;
-  data.roundKills = player.state.round_kills;
-  data.roundKillsHS = player.state.round_killhs;
+  // We flat the state data if its set (only on game)
+  if (player.hasOwnProperty('state')) {
+    data.health = player.state.health;
+    data.armor = player.state.armor;
+    data.helmet = player.state.helmet;
+    data.flashed = player.state.flashed;
+    data.burning = player.state.burning;
+    data.money = player.state.burning;
+    data.roundKills = player.state.round_kills;
+    data.roundKillsHS = player.state.round_killhs;
+  }
   if (player.hasOwnProperty('match_stats')) {
     data.kills = player.match_stats.kills;
     data.assists = player.match_stats.assists;
@@ -104,6 +112,7 @@ function Team(team, side, defaultName) {
   data.score = team.score;
   data.side = side;
   data.name = team.name || defaultName;
+  data.flag = team.flag || '';
   return data;
 }
 
@@ -135,15 +144,50 @@ CsgoData.prototype.isBombStatusChanged = function (oldData) {
 };
 
 CsgoData.prototype.logWinningTeam = function () {
-  if (this.t.score > this.ct.score){
-    return this.t.name+" is winning against "+this.ct.name+" "+this.t.score+"-"+this.ct.score;
+  if (this.team.t.score > this.team.ct.score){
+    return this.team.t.name+" is winning against "+this.team.ct.name+" "+this.team.t.score+"-"+this.team.ct.score;
   }
-  else if (this.t.score === this.ct.score){
-    return "Game is tied "+this.t.score+"-"+this.ct.score;
+  else if (this.team.t.score === this.team.ct.score){
+    return "Game is tied between "+this.team.ct.name+" and"+this.team.ct.name+" "+this.team.t.score+"-"+this.team.ct.score;
   }
   else {
-    return this.ct.name+" is winning against "+this.t.name+" "+this.ct.score+"-"+this.t.score;
+    return this.team.ct.name+" is winning against "+this.team.t.name+" "+this.team.ct.score+"-"+this.team.t.score;
   }
 };
 
+CsgoData.prototype.getWinnerTeamName = function () {
+  if (this.round.winTeam === 'CT'){
+    return this.team.ct.name;
+  }
+  else {
+    return this.team.t.name;
+  }
+};
+
+CsgoData.prototype.getWinnerTeamSide = function () {
+  if (this.round.winTeam === 'CT'){
+    return this.team.ct.side;
+  }
+  else {
+    return this.team.t.side;
+  }
+};
+
+CsgoData.prototype.isWarmup = function () {
+    return this.map.phase === 'warmup';
+};
+
+CsgoData.prototype.isAlive = function (player) {
+    return player.health > 0;
+};
+
+CsgoData.prototype.getTeamPlayersAlive = function (teamSide) {
+  var number = 0;
+  for(var key in this.players){
+    if(this.players[key].team == teamSide && this.isAlive(this.players[key])){
+      number++;
+    }
+  }
+  return number;
+};
 module.exports = CsgoData;

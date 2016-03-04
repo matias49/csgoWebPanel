@@ -26,46 +26,50 @@ router.post(CONFIG.POST_PAGE, function(req, res) {
     oldCsgo = csgo;
     csgo = new csgoModel(req.body);
     csgo.sortPlayersByTeam();
-    if(csgo.isStatusChanged(oldCsgo)){
-      switch (csgo.round.phase) {
-        case 'freezetime':
-          console.log('Round '+csgo.map.round+' is on buytime.');
-          console.log(csgo.logWinningTeam());
-          break;
-        case 'live':
-          console.log('Round '+csgo.map.round+' is now live.');
-          break;
-        case 'over':
-          // GSI already increments the round number when the round is over. no, please.
-          console.log('Round '+(csgo.map.round-1)+' just ended. '+csgo.round.winTeam+ ' won the round.');
-          break;
-        default:
-          console.log('Cannot get phase');
-          break;
+    // console.log(csgo);
+    // All the behaviour
+    if (csgo.isWarmup()) {
+      // console.log("WARMUP");
+    } else {
+      if (csgo.isStatusChanged(oldCsgo)) {
+        switch (csgo.round.phase) {
+          case 'freezetime':
+            console.log('Round ' + csgo.map.round + ' is on buytime.');
+            console.log(csgo.logWinningTeam());
+            break;
+          case 'live':
+            console.log('Round ' + csgo.map.round + ' is now live.');
+            break;
+          case 'over':
+            // GSI already increments the round number when the round is over. no, please.
+            console.log('Round ' + (csgo.map.round - 1) + ' just ended. ' + csgo.getWinnerTeamName() + ' won the round with ' + csgo.getTeamPlayersAlive(csgo.getWinnerTeamSide()) + ' players alive.');
+            break;
+          default:
+            console.log('Cannot get phase');
+            break;
+        }
       }
-    }
 
-    if(csgo.isBombStatusChanged(oldCsgo)){
-      switch (csgo.round.bomb) {
-        case 'planted':
+      if (csgo.isBombStatusChanged(oldCsgo)) {
+        if (csgo.round.bomb === 'planted') {
           console.log('Bomb has been planted.');
-          break;
-        case 'exploded':
-          console.log('Bomb exploded.');
-          break;
-        case 'defused':
-          // GSI already increments the round number when the round is over. no, please.
+        } else if (csgo.round.bomb === 'defused') {
           console.log('Bomb has been defused');
-          break;
-        default:
-          // console.log('Bomb event : '+csgo.round.bomb);
-          break;
+        } else if (csgo.round.bomb === '' && oldCsgo.round.bomb === 'planted') {
+          console.log('Bomb might exploded.');
+        } else if (csgo.round.bomb === '') {
+          console.log('no info');
+        } else {
+          console.log('new event : ' + csgo.round.bomb)
+        }
       }
     }
     // console.log(csgo.map);
     res.send('');
   } catch (e) {
+    console.error("DEBUG");
     console.log(e);
+    console.log(req.body);
   }
 })
 
