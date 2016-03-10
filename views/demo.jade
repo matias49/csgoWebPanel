@@ -19,40 +19,41 @@ block content
         p.team Team Name 2
         p.score Score
     div.row
-      div.col-md-5
+      div.col-md-5.playersTeam
         - for (var x = 1; x <= 5; x++)
-          div(id='player'+x)
+          div.player(id='player'+x)
             div.row
-              img.col-md-2.playerImage(src="http://fakeimg.pl/100/")
-              div.col-md-10
+              img.col-xs-2.playerImage(src="http://fakeimg.pl/100/")
+              div.col-xs-10
                 div.row
-                  p.playerName.col-md-2 Player : Matias49
-                  p.playerHealth.col-md-2 Health : 100
-                  p.playerArmor.col-md-2 Armor : 75
-                  p.playerMoney.col-md-2 Money : $2500
-                div.row
+                  p.playerName.col-xs-3 Player : Matias49
+                  p.playerHealth.col-xs-3 Health : 100
+                  p.playerArmor.col-xs-3 Armor : 75
+                  p.playerMoney.col-xs-3 Money : $2500
+                div.row.hidden-xs.hidden-xm
                   p.playerKills.col-md-2 K : 15
                   p.playerAssists.col-md-2 D : 2
                   p.playerDeaths.col-md-2 A : 10
                   p.playerScore.col-md-2 Score : 25
-      div.col-md-2#vs
+      div.col-md-2#vs.hidden-xs.hidden-xm.text-center
         p VS
-      div.col-md-5.pull-right
+      div.col-md-5.playersTeam
         - for (var x = 6; x <= 10; x++)
-          div(id='player'+x)
-            div.row.text-right
-              div.col-md-10
+          div.player(id='player'+x)
+            div.row
+              img.col-xs-2.hidden-md.hidden-lg.playerImage(src="http://fakeimg.pl/100/")
+              div.col-xs-10
                 div.row
-                  p.playerName.col-md-2 Player : Matias49
-                  p.playerHealth.col-md-2 Health : 100
-                  p.playerArmor.col-md-2 Armor : 75
-                  p.playerMoney.col-md-2 Money : $2500
-                div.row
+                  p.playerName.col-xs-3 Player : Matias49
+                  p.playerHealth.col-xs-3 Health : 100
+                  p.playerArmor.col-xs-3 Armor : 75
+                  p.playerMoney.col-xs-3 Money : $2500
+                div.row.hidden-xs.hidden-xm
                   p.playerKills.col-md-2 K : 15
                   p.playerAssists.col-md-2 D : 2
                   p.playerDeaths.col-md-2 A : 10
                   p.playerScore.col-md-2 Score : 25
-              img.col-md-2.playerImage(src="http://fakeimg.pl/100/")
-    div.row
+              img.col-md-2.hidden-xs.hidden-xm.playerImage(src="http://fakeimg.pl/100/")
+    div.row#log
       p.col-md-1 Log : 
-      p.col-md-11#log
+      p.col-md-11#logText

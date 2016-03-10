@@ -1,8 +1,32 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background: url('../images/background.jpg');
+  color:white;
 }
 
 a {
   color: #00B7FF;
+}
+
+.playersTeam {
+  background-color: rgba(0, 0, 0, 0.59);
+  color:white;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+.player {
+  margin: 1rem 0;
+  padding: 1rem 1rem;
+  border: 1px solid white;
+}
+
+#log {
+  margin-top: 2rem;
+}
+
+#vs{
+  font-size: 12rem;
+  vertical-align: middle;
 }
