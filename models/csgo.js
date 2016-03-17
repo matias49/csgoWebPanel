@@ -87,7 +87,7 @@ function Player(player, steamid) {
     data.helmet = player.state.helmet;
     data.flashed = player.state.flashed;
     data.burning = player.state.burning;
-    data.money = player.state.burning;
+    data.money = player.state.money;
     data.roundKills = player.state.round_kills;
     data.roundKillsHS = player.state.round_killhs;
   }
