@@ -57,3 +57,11 @@ $('#playersSeeScoreboard').click(function() {
     $('.playerMoney').show();
   }
 });
+
+$('#hideLog').click(function() {
+  if ($('#hideLog').is(':checked')) {
+    $('#log').hide();
+  } else {
+    $('#log').show();
+  }
+});
