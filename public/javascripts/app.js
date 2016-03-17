@@ -1,3 +1,5 @@
+// Socket behaviour
+
 var socket = io.connect('http://localhost:3001');
 
 socket.on('info', function(data) {
@@ -44,10 +46,7 @@ socket.on('players', function(data) {
 });
 
 
-$(document).ready(function() {
-  console.log('ready');
-});
-
+// Button behaviour
 $('#playersSeeScoreboard').click(function() {
   if ($('#playersSeeScoreboard').is(':checked')) {
     $('.playerBars').hide();
