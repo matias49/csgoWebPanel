@@ -50,6 +50,9 @@ a {
 .playerHealth, .playerArmor {
   font-size: 0.5rem;
 }
+.playerMoney:before {
+  content: '$';
+}
 .playerKills:before {
   content: 'K : ';
 }
