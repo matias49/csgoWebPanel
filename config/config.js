@@ -7,7 +7,8 @@ var CONFIG = {
   'TOKEN': 'TOKEN_AUTH',
   'VERIFY_TOKEN': 0,
   'STEAM_ID': 'SPECTATOR_STEAM_ID',
-  'VERIFY_STEAM_ID': 0
+  'VERIFY_STEAM_ID': 0,
+  'STEAM_API_KEY' : "YOUR_KEY"
 }
 
 module.exports = CONFIG;

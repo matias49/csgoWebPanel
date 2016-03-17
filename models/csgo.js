@@ -1,4 +1,5 @@
 var CONFIG = require('../config/config');
+var request = require('request');
 
 /**
  * The primary object of the CSGO data
@@ -9,7 +10,7 @@ function CsgoData(body) {
   // Game can be on 'menu' activity or 'warmup' phase. On these cases there is no Map or Round data.
   if (body.hasOwnProperty('map')) {
     this.map = Map(body.map);
-    this.team={};
+    this.team = {};
     this.team.ct = Team(body.map.team_ct, 'CT', 'CT');
     this.team.t = Team(body.map.team_t, 'T', 'T');
   }
@@ -50,7 +51,7 @@ function Map(map) {
   data.mode = map.mode;
   data.name = map.name;
   data.phase = map.phase;
-  data.round = map.round+1;
+  data.round = map.round + 1;
   return data;
 }
 
@@ -147,55 +148,81 @@ CsgoData.prototype.isStatusChanged = function(oldData) {
   return this.round.phase !== oldData.round.phase;
 };
 
-CsgoData.prototype.isBombStatusChanged = function (oldData) {
+CsgoData.prototype.isBombStatusChanged = function(oldData) {
   return this.round.bomb !== oldData.round.bomb;
 };
 
-CsgoData.prototype.logWinningTeam = function () {
-  if (this.team.t.score > this.team.ct.score){
-    return this.team.t.name+" is winning against "+this.team.ct.name+" "+this.team.t.score+"-"+this.team.ct.score;
-  }
-  else if (this.team.t.score === this.team.ct.score){
-    return "Game is tied between "+this.team.t.name+" and "+this.team.ct.name+" "+this.team.t.score+"-"+this.team.ct.score;
-  }
-  else {
-    return this.team.ct.name+" is winning against "+this.team.t.name+" "+this.team.ct.score+"-"+this.team.t.score;
+CsgoData.prototype.logWinningTeam = function() {
+  if (this.team.t.score > this.team.ct.score) {
+    return this.team.t.name + " is winning against " + this.team.ct.name + " " + this.team.t.score + "-" + this.team.ct.score;
+  } else if (this.team.t.score === this.team.ct.score) {
+    return "Game is tied between " + this.team.t.name + " and " + this.team.ct.name + " " + this.team.t.score + "-" + this.team.ct.score;
+  } else {
+    return this.team.ct.name + " is winning against " + this.team.t.name + " " + this.team.ct.score + "-" + this.team.t.score;
   }
 };
 
-CsgoData.prototype.getWinnerTeamName = function () {
-  if (this.round.winTeam === 'CT'){
+CsgoData.prototype.getWinnerTeamName = function() {
+  if (this.round.winTeam === 'CT') {
     return this.team.ct.name;
-  }
-  else {
+  } else {
     return this.team.t.name;
   }
 };
 
-CsgoData.prototype.getWinnerTeamSide = function () {
-  if (this.round.winTeam === 'CT'){
+CsgoData.prototype.getWinnerTeamSide = function() {
+  if (this.round.winTeam === 'CT') {
     return this.team.ct.side;
-  }
-  else {
+  } else {
     return this.team.t.side;
   }
 };
 
-CsgoData.prototype.isWarmup = function () {
-    return this.map.phase === 'warmup';
+CsgoData.prototype.isWarmup = function() {
+  return this.map.phase === 'warmup';
 };
 
-CsgoData.prototype.isAlive = function (player) {
-    return player.health > 0;
+CsgoData.prototype.isAlive = function(player) {
+  return player.health > 0;
 };
 
-CsgoData.prototype.getTeamPlayersAlive = function (teamSide) {
+CsgoData.prototype.getTeamPlayersAlive = function(teamSide) {
   var number = 0;
-  for(var key in this.players){
-    if(this.players[key].team == teamSide && this.isAlive(this.players[key])){
+  for (var key in this.players) {
+    if (this.players[key].team == teamSide && this.isAlive(this.players[key])) {
       number++;
     }
   }
   return number;
+};
+
+CsgoData.prototype.getPlayerImages = function() {
+  return new Promise(function(fulfill, reject) {
+    var playersId = [];
+    var playersIdString;
+    for (var player in this.players) {
+      playersId.pop(player.steamid);
+      playersIdString = playersId.join(',');
+    }
+    console.log('callAPI');
+    request('https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=' + CONFIG.STEAM_API_KEY + '&steamids=' + playersIdString + '&format=json', function(error, response, body) {
+      var steamResponse = JSON.parse(body);
+      //Check for error
+      if (error) {
+        return console.log('Error:', error);
+      }
+      //Check for right status code
+      if (response.statusCode !== 200) {
+        return console.log('Invalid Status Code Returned:', response.statusCode);
+      }
+      for (var i = 0; i < array.length; i++) {
+        this.players[i].image = steamResponse.response.players[i].avatarmedium;
+        playersIdString = playersId.join(',');
+      }
+      // console.log(steamResponse.response.players[0].avatarmedium);
+      fulfill(steamResponse.response.players[0].avatarmedium);
+    });
+  });
+}
 };
 module.exports = CsgoData;
