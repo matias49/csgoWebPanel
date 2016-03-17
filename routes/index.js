@@ -7,6 +7,25 @@ var oldCsgo, csgo;
 
 var io = require('socket.io')(3001);
 
+io.on('connection', function (socket) {
+  io.emit('mapInfo', {
+    'name': csgo.map.name,
+    'status': csgo.round.phase
+  });
+  io.emit('teamT', {
+    'name': csgo.team.t.name,
+    'score': csgo.team.t.score
+  });
+  io.emit('teamCT', {
+    'name': csgo.team.ct.name,
+    'score': csgo.team.ct.score
+  });
+
+  io.emit('players', {
+    'players': csgo.players
+  });
+});
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', {
@@ -42,8 +61,8 @@ router.post(CONFIG.POST_PAGE, function(req, res) {
       'status': csgo.round.phase
     });
     io.emit('teamT', {
-      'name': csgo.team.ct.name,
-      'score': csgo.team.ct.score
+      'name': csgo.team.t.name,
+      'score': csgo.team.t.score
     });
     io.emit('teamCT', {
       'name': csgo.team.ct.name,
