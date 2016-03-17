@@ -22,7 +22,7 @@ block content
         p.col-xs-6.score Score
     div.row
       div.col-md-5.playersTeam#teamCt
-        - for (var x = 1; x <= 5; x++)
+        - for (var x = 0; x < 5; x++)
           div.player(id='player'+x)
             div.row
               img.col-xs-2.playerImage(src="http://fakeimg.pl/100/")
@@ -52,7 +52,7 @@ block content
       div.col-md-2#vs.hidden-xs.hidden-xm.text-center
         p VS
       div.col-md-5.playersTeam#teamT
-        - for (var x = 6; x <= 10; x++)
+        - for (var x = 5; x < 10; x++)
           div.player(id='player'+x)
             div.row
               img.col-xs-2.hidden-md.hidden-lg.playerImage(src="http://fakeimg.pl/100/")
@@ -67,7 +67,7 @@ block content
                     div.col-xs-10
                       div.progress
                         div.progress-bar.progress-bar-danger(role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 30%;") 30
-                  div.row.playerHealth.col-xs-12.col-md-6
+                  div.row.playerArmor.col-xs-12.col-md-6
                     div.col-xs-2
                       img(src="../images/armorHeadicon.png")
                     div.col-xs-10
