@@ -2,31 +2,68 @@ body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   background: url('../images/background.jpg');
-  color:white;
+  color: white;
 }
-
 a {
   color: #00B7FF;
 }
-
 .playersTeam {
   background-color: rgba(0, 0, 0, 0.59);
-  color:white;
+  color: white;
   padding: 1rem;
   border-radius: 10px;
 }
-
+.playersTeam#teamT {
+  background: url('../images/ticon.png') no-repeat;
+  background-color: rgba(187, 169, 83, 0.8);
+  background-position: center center;
+}
+.playersTeam#teamCt {
+  background: url('../images/cticon.png') no-repeat;
+  background-color: rgba(91, 112, 143, 0.8);
+  background-position: center center;
+}
+.moreInfo {
+  font-size: 2rem;
+}
 .player {
+  background-color: rgba(0, 0, 0, 0.7);
   margin: 1rem 0;
   padding: 1rem 1rem;
   border: 1px solid white;
+  font-size: 3rem;
 }
-
+.playerInfo p {
+  margin-bottom: 3px;
+}
+.playerMoney {
+  color: rgb(17, 214, 0);
+  font-size: 3.5rem;
+}
 #log {
   margin-top: 2rem;
 }
-
-#vs{
+#vs {
   font-size: 12rem;
   vertical-align: middle;
+}
+.playerHealth, .playerArmor {
+  font-size: 0.5rem;
+}
+.playerKills:before {
+  content: 'K : ';
+}
+.playerAssists:before {
+  content: 'D : ';
+}
+.playerDeaths:before {
+  content: 'A : ';
+}
+.playerScore:before {
+  content: 'Score : ';
+}
+.playerKills:before, .playerAssists:before, .playerDeaths:before, .playerScore:before {
+  background-color: rgb(0, 0, 0);
+  border: 1px solid gray;
+  margin-right: 0.5rem;
 }
