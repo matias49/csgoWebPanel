@@ -7,10 +7,6 @@ var oldCsgo, csgo;
 
 var io = require('socket.io')(3001);
 
-io.on('connection', function (socket) {
-    console.log('new user');
-});
-
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', {
@@ -39,37 +35,26 @@ router.post(CONFIG.POST_PAGE, function(req, res) {
     csgo.sortPlayersByTeam();
     // console.log(csgo);
 
-    
+
     // Informations en cours de la partie
-    io.emit('MapInfo', {
-      'name'   : csgo.map.name,
-      'status' : csgo.round.phase
+    io.emit('mapInfo', {
+      'name': csgo.map.name,
+      'status': csgo.round.phase
     });
-    io.emit('TeamT', {
-      'name'  : csgo.team.ct.name,
-      'score' : csgo.team.ct.score
+    io.emit('teamT', {
+      'name': csgo.team.ct.name,
+      'score': csgo.team.ct.score
     });
-    io.emit('TeamCT', {
-      'name'  : csgo.team.ct.name,
-      'score' : csgo.team.ct.score
+    io.emit('teamCT', {
+      'name': csgo.team.ct.name,
+      'score': csgo.team.ct.score
     });
-    for(var key in player){
-      io.emit('PlayerInfo', {
-        'name'        : csgo.player[key].name,
-        'team'        : csgo.player[key].team,
-        'health'      : csgo.player[key].health,
-        'armor'       : csgo.player[key].armor,
-        'helmet'      : csgo.player[key].helmet,
-        'kills'       : csgo.player[key].kills,
-        'deaths'      : csgo.player[key].deaths,
-        'assists'     : csgo.player[key].assists,
-        'score'       : csgo.player[key].score,
-        'money'       : csgo.player[key].money,
-        'roundKills'  : csgo.player[key].roundKills
-      });
-    }
-    
-    
+
+    io.emit('players', {
+      'players': csgo.players
+    });
+
+
     // All the behaviour
     if (csgo.isWarmup()) {
       // console.log("WARMUP");
@@ -78,17 +63,23 @@ router.post(CONFIG.POST_PAGE, function(req, res) {
         switch (csgo.round.phase) {
           case 'freezetime':
             console.log('Round ' + csgo.map.round + ' is on buytime.');
-            io.emit('info', {'text' : 'Round ' + csgo.map.round + ' is on buytime.'});
+            io.emit('info', {
+              'text': 'Round ' + csgo.map.round + ' is on buytime.'
+            });
             console.log(csgo.logWinningTeam());
             break;
           case 'live':
             console.log('Round ' + csgo.map.round + ' is now live.');
-            io.emit('info', {'text' : 'Round ' + csgo.map.round + ' is now live.'});
+            io.emit('info', {
+              'text': 'Round ' + csgo.map.round + ' is now live.'
+            });
             break;
           case 'over':
             // GSI already increments the round number when the round is over. no, please.
             console.log('Round ' + (csgo.map.round - 1) + ' just ended. ' + csgo.getWinnerTeamName() + ' won the round with ' + csgo.getTeamPlayersAlive(csgo.getWinnerTeamSide()) + ' players alive.');
-            io.emit('info', {'text' : 'Round ' + (csgo.map.round - 1) + ' just ended. ' + csgo.getWinnerTeamName() + ' won the round with ' + csgo.getTeamPlayersAlive(csgo.getWinnerTeamSide()) + ' players alive.'});
+            io.emit('info', {
+              'text': 'Round ' + (csgo.map.round - 1) + ' just ended. ' + csgo.getWinnerTeamName() + ' won the round with ' + csgo.getTeamPlayersAlive(csgo.getWinnerTeamSide()) + ' players alive.'
+            });
             break;
           default:
             console.log('Cannot get phase');
@@ -99,14 +90,20 @@ router.post(CONFIG.POST_PAGE, function(req, res) {
       if (csgo.isBombStatusChanged(oldCsgo)) {
         if (csgo.round.bomb === 'planted') {
           console.log('Bomb has been planted.');
-          io.emit('info', {'text' : 'Bomb has been planted.'});
+          io.emit('info', {
+            'text': 'Bomb has been planted.'
+          });
 
         } else if (csgo.round.bomb === 'defused') {
           console.log('Bomb has been defused');
-          io.emit('info', {'text' : 'Bomb has been defused.'});
+          io.emit('info', {
+            'text': 'Bomb has been defused.'
+          });
         } else if (csgo.round.bomb === '' && oldCsgo.round.bomb === 'planted') {
           console.log('Bomb might exploded.');
-          io.emit('info', {'text' : 'Bomb might exploded.'});
+          io.emit('info', {
+            'text': 'Bomb might exploded.'
+          });
         } else if (csgo.round.bomb === '') {
           console.log('no info');
         } else {
