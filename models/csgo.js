@@ -156,7 +156,7 @@ CsgoData.prototype.logWinningTeam = function () {
     return this.team.t.name+" is winning against "+this.team.ct.name+" "+this.team.t.score+"-"+this.team.ct.score;
   }
   else if (this.team.t.score === this.team.ct.score){
-    return "Game is tied between "+this.team.ct.name+" and"+this.team.ct.name+" "+this.team.t.score+"-"+this.team.ct.score;
+    return "Game is tied between "+this.team.t.name+" and "+this.team.ct.name+" "+this.team.t.score+"-"+this.team.ct.score;
   }
   else {
     return this.team.ct.name+" is winning against "+this.team.t.name+" "+this.team.ct.score+"-"+this.team.t.score;
