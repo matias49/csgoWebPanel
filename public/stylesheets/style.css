@@ -50,6 +50,9 @@ a {
 .playerHealth, .playerArmor {
   font-size: 0.5rem;
 }
+#map::before {
+  content: 'Map : ';
+}
 .playerMoney:before {
   content: '$';
 }
