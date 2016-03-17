@@ -19,7 +19,7 @@ socket.on('teamCT', function(data) {
   $("#team1.score").text(data.score);
 });
 
-socket.on('players', function(data)) {
+socket.on('players', function(data) {
   for (var i = 0; i < data.players.length; i++) {
     player = data.players[i];
     console.log("Player " + player.name + "is on team" + player.team);
@@ -41,7 +41,7 @@ socket.on('players', function(data)) {
     $(".player" + i + ".playerName").text(player.score);
     // $(".player"+i+".playerName").text(player.roundKills);
   }
-}
+});
 
 
 $(document).ready(function() {
