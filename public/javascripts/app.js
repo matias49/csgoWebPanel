@@ -26,11 +26,11 @@ socket.on('players', function(data) {
     $(".player" + i + ".playerName").text(player.name);
     $(".player" + i + ".playerMoney").text(player.money);
     // Health
-    $(".player" + i + ".playerHealth.progress-bar").attr("aria-valuenow": player.health);
+    $(".player" + i + ".playerHealth.progress-bar").attr("aria-valuenow", player.health);
     $(".player" + i + ".playerHealth.progress-bar").css("width": player.health + "%");
     $(".player" + i + ".playerHealth.progress-bar").text(player.health);
     // Armor
-    $(".player" + i + ".playerArmor.progress-bar").attr("aria-valuenow": player.armor);
+    $(".player" + i + ".playerArmor.progress-bar").attr("aria-valuenow", player.armor);
     $(".player" + i + ".playerArmor.progress-bar").css("width": player.armor + "%");
     $(".player" + i + ".playerArmor.progress-bar").text(player.armor);
 
