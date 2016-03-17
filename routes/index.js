@@ -38,6 +38,38 @@ router.post(CONFIG.POST_PAGE, function(req, res) {
     csgo = new csgoModel(req.body);
     csgo.sortPlayersByTeam();
     // console.log(csgo);
+
+    
+    // Informations en cours de la partie
+    io.emit('MapInfo', {
+      'name'   : csgo.map.name,
+      'status' : csgo.round.phase
+    });
+    io.emit('TeamT', {
+      'name'  : csgo.team.ct.name,
+      'score' : csgo.team.ct.score
+    });
+    io.emit('TeamCT', {
+      'name'  : csgo.team.ct.name,
+      'score' : csgo.team.ct.score
+    });
+    for(var key in player){
+      io.emit('PlayerInfo', {
+        'name'        : csgo.player[key].name,
+        'team'        : csgo.player[key].team,
+        'health'      : csgo.player[key].health,
+        'armor'       : csgo.player[key].armor,
+        'helmet'      : csgo.player[key].helmet,
+        'kills'       : csgo.player[key].kills,
+        'deaths'      : csgo.player[key].deaths,
+        'assists'     : csgo.player[key].assists,
+        'score'       : csgo.player[key].score,
+        'money'       : csgo.player[key].money,
+        'roundKills'  : csgo.player[key].roundKills
+      });
+    }
+    
+    
     // All the behaviour
     if (csgo.isWarmup()) {
       // console.log("WARMUP");
