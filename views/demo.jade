@@ -6,20 +6,20 @@ block content
       div.col-md-4
         h1#title CSGO Web Spectator Panel
       div.col-md-3.text-center
-        p#status Status
+        h2#status Status
       div.col-md-3.col-md-offset-1.text-center
         div.row
           input(type="checkbox" id="playersSeeScoreboard")
           label(for="playersSeeScoreboard") Players can see this scoreboard
     div.row
-      div.row.col-md-4.text-center#team1
-        p.col-xs-6.team Team Name 1
-        p.col-xs-6.score Score
+      div.row.col-md-4.text-center#teamCT
+        h3.col-xs-6.team Team CT
+        h3.col-xs-6.score 10
       div.col-md-2.col-md-offset-1
-      div.row.col-md-4.col-md-offset-1.text-center#team2
-        p.col-xs-6.team Team Name 2
-        p.col-xs-6.score Score
         h4#map De_dust2
+      div.row.col-md-4.col-md-offset-1.text-center#teamT
+        h3.col-xs-6.team Team T
+        h3.col-xs-6.score 14
     div.row
       div.col-md-5.playersTeam#teamCt
         - for (var x = 0; x < 5; x++)

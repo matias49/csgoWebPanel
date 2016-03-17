@@ -10,13 +10,13 @@ socket.on('mapInfo', function(data) {
 });
 
 socket.on('teamCT', function(data) {
-  $("#team1 .team").text(data.name);
-  $("#team1 .score").text(data.score);
+  $("#teamCT .team").text(data.name);
+  $("#teamCT .score").text(data.score);
 });
 
 socket.on('teamT', function(data) {
-  $("#team2 .team").text(data.name);
-  $("#team2 .score").text(data.score);
+  $("#teamT .team").text(data.name);
+  $("#teamT .score").text(data.score);
 });
 
 socket.on('players', function(data) {
