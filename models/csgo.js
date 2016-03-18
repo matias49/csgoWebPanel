@@ -232,6 +232,11 @@ CsgoData.prototype.getTeamPlayersAlive = function(teamSide) {
   return number;
 };
 
+/**
+ * Check if the players between the n and n-1 data changed
+ * @param  {JSON} oldData The n-1 data
+ * @return {boolean}         True if a player changed or is missing, false otherwise
+ */
 CsgoData.prototype.IsPlayersChanged = function(oldData) {
   console.log('IsPlayersChanged');
   for (var key in oldData.players) {
@@ -247,13 +252,24 @@ CsgoData.prototype.IsPlayersChanged = function(oldData) {
   return false;
 }
 
+/**
+ * Get the players images by the steam api
+ * We call the steam API only if the pictures were never get.
+ * We use a promise here to be async
+ * @param  {JSON} newData The n data of the game
+ * @param  {JSON}} oldData The n-1 data of the game
+ * @return {JSON}         All the n data plus the pictures of the players
+ */
 CsgoData.prototype.getPlayerImages = function(newData, oldData) {
   console.log('CALLPLAYERS');
   return new Promise(function(fulfill, reject) {
+    // By default, we think we don't have to call the Steam API beceause we already have them on the n-1 data
     var getImages = false;
 
+    // So first we check we still have the same 10 players
     if (!newData.IsPlayersChanged(oldData)) {
       console.log('Players didnt change');
+      // And these 10 players have a picture
       for (var player in oldData.players) {
         if (oldData.players[player].image === undefined) {
           console.log('A player doesnt have a picture.');
@@ -263,14 +279,19 @@ CsgoData.prototype.getPlayerImages = function(newData, oldData) {
     } else {
       getImages = true;
     }
+    // We don't have all the pictures, so we'll call the Steam API
+    // If only a single player changed, we still call the pictures of the 10 players, beceause we will always use one call.
     if (getImages) {
       console.log('Get Images');
+      // We get all the players steamID to join them on the URL
       var playersId = [];
       var playersIdString;
       for (var player in newData.players) {
         playersId.push(newData.players[player].steamid);
         playersIdString = playersId.join(',');
       }
+      // We call the API via request
+      // Default request template
       console.log('callAPI');
       request('https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=' + CONFIG.STEAM_API_KEY + '&steamids=' + playersIdString + '&format=json', function(error, response, body) {
         var steamResponse = JSON.parse(body);
@@ -282,11 +303,13 @@ CsgoData.prototype.getPlayerImages = function(newData, oldData) {
         if (response.statusCode !== 200) {
           return console.log('Invalid Status Code Returned:', response.statusCode);
         }
+        // No error, we navigate through the response to get the pictures and save them to the right player
         for (var i = 0; i < steamResponse.response.players.length; i++) {
           steamid = steamResponse.response.players[i].steamid;
           for (var player in newData.players) {
             if (newData.players[player].steamid === steamid) {
               newData.players[player].image = steamResponse.response.players[i].avatarmedium;
+              // Player found for the picture, no need to continue here
               break;
             }
           }
@@ -294,6 +317,7 @@ CsgoData.prototype.getPlayerImages = function(newData, oldData) {
         fulfill(newData);
       });
     } else {
+      // We didn't call the API. We get the pictures from the n-1 data
       console.log('no need to call. We pick the last pictures.');
       for (var key in newData.players) {
         newData.players[key].image = oldData.players[key].image;
