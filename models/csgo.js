@@ -137,20 +137,47 @@ CsgoData.prototype.sortPlayersByTeam = function() {
   });
 }
 
+/**
+ * Sorting all the players by their Steam ID
+ * @return {JSON} The plaers sorted by their Steam ID
+ */
 CsgoData.prototype.sortPlayersBySteamId = function() {
   this.players.sort(function(a, b) {
     return a.steamid.localeCompare(b.steamid);
   });
 }
 
+/**
+ * Check if the status of the game changed
+ * It can be this values :
+ * - freezetime
+ * - live
+ * - over
+ * @param  {JSON} oldData The n-1 data the server sent
+ * @return {boolean}         True if the status between n and n-1 data changed
+ */
 CsgoData.prototype.isStatusChanged = function(oldData) {
   return this.round.phase !== oldData.round.phase;
 };
 
+/**
+ * Check if the status of the bomb changed
+ * It can be this values :
+ * - undefined
+ * - planted
+ * He doen't have a 'exploded' value
+ * @param  {JSON} oldData The n-1 data the server sent
+ * @return {boolean}         True if the status between n and n-1 data changed
+ */
 CsgoData.prototype.isBombStatusChanged = function (oldData) {
   return this.round.bomb !== oldData.round.bomb;
 };
 
+/**
+ * DEBUG function
+ * It prints on the console the two teams, which one is winning and the score
+ * @return {string} The string which will be printed
+ */
 CsgoData.prototype.logWinningTeam = function () {
   if (this.team.t.score > this.team.ct.score){
     return this.team.t.name+" is winning against "+this.team.ct.name+" "+this.team.t.score+"-"+this.team.ct.score;
@@ -163,6 +190,10 @@ CsgoData.prototype.logWinningTeam = function () {
   }
 };
 
+/**
+ * Get the Team name who won the round
+ * @return {string} The team name
+ */
 CsgoData.prototype.getWinnerTeamName = function () {
   if (this.round.winTeam === 'CT'){
     return this.team.ct.name;
@@ -172,6 +203,10 @@ CsgoData.prototype.getWinnerTeamName = function () {
   }
 };
 
+/**
+ * Get the Team side who won the round
+ * @return {string} The team side
+ */
 CsgoData.prototype.getWinnerTeamSide = function () {
   if (this.round.winTeam === 'CT'){
     return this.team.ct.side;
@@ -181,14 +216,28 @@ CsgoData.prototype.getWinnerTeamSide = function () {
   }
 };
 
+/**
+ * Check if the game is on warmup phase
+ * @return {Boolean} true if the game is on warmup phase, false otherwise
+ */
 CsgoData.prototype.isWarmup = function () {
     return this.map.phase === 'warmup';
 };
 
+/**
+ * Check if the player is alive
+ * @param  {JSON}  player The player data
+ * @return {Boolean}        true if the player is alive (health > 0), false otherwise
+ */
 CsgoData.prototype.isAlive = function (player) {
     return player.health > 0;
 };
 
+/**
+ * Get the number of the players alive on a team
+ * @param  {string} teamSide The team side we want to get the players alive
+ * @return {int}          The number of players who are alive on the team specified
+ */
 CsgoData.prototype.getTeamPlayersAlive = function (teamSide) {
   var number = 0;
   for(var key in this.players){
