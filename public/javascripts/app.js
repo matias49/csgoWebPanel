@@ -1,6 +1,6 @@
 // Socket behaviour
 
-var socket = io.connect('http://localhost:3001');
+var socket = io.connect('http://192.168.63.128:3001');
 
 socket.on('info', function(data) {
   $("#logText").append(data.text + "<br />");
@@ -45,6 +45,12 @@ socket.on('players', function(data) {
   }
 });
 
+socket.on('playersImages', function(data){
+  for (var i = 0; i < data.players.length; i++) {
+    var player = data.players[i];
+    $("#player" + i + " .playerImage").attr("src", player.image);
+  }
+});
 
 // Button behaviour
 $('#playersSeeScoreboard').click(function() {

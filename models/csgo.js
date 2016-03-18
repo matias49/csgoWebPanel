@@ -196,33 +196,76 @@ CsgoData.prototype.getTeamPlayersAlive = function(teamSide) {
   return number;
 };
 
-CsgoData.prototype.getPlayerImages = function() {
-  return new Promise(function(fulfill, reject) {
-    var playersId = [];
-    var playersIdString;
-    for (var player in this.players) {
-      playersId.pop(player.steamid);
-      playersIdString = playersId.join(',');
+CsgoData.prototype.IsPlayersChanged = function(oldData){
+  console.log('IsPlayersChanged');
+  for(var key in oldData.players){
+    if (this.players[key] === undefined){
+      return true;
     }
-    console.log('callAPI');
-    request('https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=' + CONFIG.STEAM_API_KEY + '&steamids=' + playersIdString + '&format=json', function(error, response, body) {
-      var steamResponse = JSON.parse(body);
-      //Check for error
-      if (error) {
-        return console.log('Error:', error);
+  }
+  for(var key in this.players){
+      if (oldData.players[key] === undefined){
+        return true;
       }
-      //Check for right status code
-      if (response.statusCode !== 200) {
-        return console.log('Invalid Status Code Returned:', response.statusCode);
+    }
+  return false;
+}
+
+CsgoData.prototype.getPlayerImages = function(newData, oldData) {
+  console.log('CALLPLAYERS');
+  return new Promise(function(fulfill, reject) {
+    var getImages = false;
+
+    if(!newData.IsPlayersChanged(oldData)){
+      console.log('Players didnt change');
+      for (var player in oldData.players) {
+        if(oldData.players[player].image === undefined){
+          console.log('A player doesnt have a picture.');
+          getImages = true;
+        }
       }
-      for (var i = 0; i < array.length; i++) {
-        this.players[i].image = steamResponse.response.players[i].avatarmedium;
+    }
+    else {
+      getImages = true;
+    }
+    if(getImages){
+      console.log('Get Images');
+      var playersId = [];
+      var playersIdString;
+      for (var player in newData.players) {
+        playersId.push(newData.players[player].steamid);
         playersIdString = playersId.join(',');
       }
-      // console.log(steamResponse.response.players[0].avatarmedium);
-      fulfill(steamResponse.response.players[0].avatarmedium);
-    });
+      console.log('callAPI');
+      request('https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=' + CONFIG.STEAM_API_KEY + '&steamids=' + playersIdString + '&format=json', function(error, response, body) {
+        var steamResponse = JSON.parse(body);
+        //Check for error
+        if (error) {
+          return console.log('Error:', error);
+        }
+        //Check for right status code
+        if (response.statusCode !== 200) {
+          return console.log('Invalid Status Code Returned:', response.statusCode);
+        }
+        for (var i = 0; i < steamResponse.response.players.length; i++) {
+          steamid = steamResponse.response.players[i].steamid;
+          for (var player in newData.players) {
+            if(newData.players[player].steamid === steamid){
+              newData.players[player].image = steamResponse.response.players[i].avatarmedium;
+              break;
+            }
+          }
+        }
+        fulfill(newData);
+      });
+    }
+    else {
+      console.log('no need to call. We pick the last pictures.');
+      for (var key in newData.players) {
+        newData.players[key].image = oldData.players[key].image;
+      }
+      fulfill(newData);
+    }
   });
-}
 };
 module.exports = CsgoData;

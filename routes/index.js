@@ -24,6 +24,12 @@ io.on('connection', function (socket) {
   io.emit('players', {
     'players': csgo.players
   });
+
+  csgo.getPlayerImages(csgo, oldCsgo).then(function(res) {
+    io.emit('playersImages', {
+      'players': csgo.players
+    });
+  });
 });
 
 /* GET home page. */
@@ -73,6 +79,11 @@ router.post(CONFIG.POST_PAGE, function(req, res) {
       'players': csgo.players
     });
 
+    csgo.getPlayerImages(csgo, oldCsgo).then(function(res) {
+      io.emit('playersImages', {
+        'players': csgo.players
+      });
+    });
 
     // All the behaviour
     if (csgo.isWarmup()) {
