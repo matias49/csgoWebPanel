@@ -148,20 +148,38 @@ CsgoData.prototype.isStatusChanged = function(oldData) {
   return this.round.phase !== oldData.round.phase;
 };
 
+/**
+ * Check if the status of the bomb changed
+ * It can be this values :
+ * - undefined
+ * - planted
+ * He doen't have a 'exploded' value
+ * @param  {JSON} oldData The n-1 data the server sent
+ * @return {boolean}         True if the status between n and n-1 data changed
+ */
 CsgoData.prototype.isBombStatusChanged = function(oldData) {
   return this.round.bomb !== oldData.round.bomb;
 };
 
+/**
+ * DEBUG function
+ * It prints on the console the two teams, which one is winning and the score
+ * @return {string} The string which will be printed
+ */
 CsgoData.prototype.logWinningTeam = function() {
   if (this.team.t.score > this.team.ct.score) {
     return this.team.t.name + " is winning against " + this.team.ct.name + " " + this.team.t.score + "-" + this.team.ct.score;
   } else if (this.team.t.score === this.team.ct.score) {
-    return "Game is tied between " + this.team.t.name + " and " + this.team.ct.name + " " + this.team.t.score + "-" + this.team.ct.score;
+    return "Game is tied between " + this.team.ct.name + " and" + this.team.ct.name + " " + this.team.t.score + "-" + this.team.ct.score;
   } else {
     return this.team.ct.name + " is winning against " + this.team.t.name + " " + this.team.ct.score + "-" + this.team.t.score;
   }
 };
 
+/**
+ * Get the Team name who won the round
+ * @return {string} The team name
+ */
 CsgoData.prototype.getWinnerTeamName = function() {
   if (this.round.winTeam === 'CT') {
     return this.team.ct.name;
@@ -170,6 +188,10 @@ CsgoData.prototype.getWinnerTeamName = function() {
   }
 };
 
+/**
+ * Get the Team side who won the round
+ * @return {string} The team side
+ */
 CsgoData.prototype.getWinnerTeamSide = function() {
   if (this.round.winTeam === 'CT') {
     return this.team.ct.side;
@@ -178,14 +200,28 @@ CsgoData.prototype.getWinnerTeamSide = function() {
   }
 };
 
+/**
+ * Check if the game is on warmup phase
+ * @return {Boolean} true if the game is on warmup phase, false otherwise
+ */
 CsgoData.prototype.isWarmup = function() {
   return this.map.phase === 'warmup';
 };
 
+/**
+ * Check if the player is alive
+ * @param  {JSON}  player The player data
+ * @return {Boolean}        true if the player is alive (health > 0), false otherwise
+ */
 CsgoData.prototype.isAlive = function(player) {
   return player.health > 0;
 };
 
+/**
+ * Get the number of the players alive on a team
+ * @param  {string} teamSide The team side we want to get the players alive
+ * @return {int}          The number of players who are alive on the team specified
+ */
 CsgoData.prototype.getTeamPlayersAlive = function(teamSide) {
   var number = 0;
   for (var key in this.players) {
@@ -196,18 +232,18 @@ CsgoData.prototype.getTeamPlayersAlive = function(teamSide) {
   return number;
 };
 
-CsgoData.prototype.IsPlayersChanged = function(oldData){
+CsgoData.prototype.IsPlayersChanged = function(oldData) {
   console.log('IsPlayersChanged');
-  for(var key in oldData.players){
-    if (this.players[key] === undefined){
+  for (var key in oldData.players) {
+    if (this.players[key] === undefined) {
       return true;
     }
   }
-  for(var key in this.players){
-      if (oldData.players[key] === undefined){
-        return true;
-      }
+  for (var key in this.players) {
+    if (oldData.players[key] === undefined) {
+      return true;
     }
+  }
   return false;
 }
 
@@ -216,19 +252,18 @@ CsgoData.prototype.getPlayerImages = function(newData, oldData) {
   return new Promise(function(fulfill, reject) {
     var getImages = false;
 
-    if(!newData.IsPlayersChanged(oldData)){
+    if (!newData.IsPlayersChanged(oldData)) {
       console.log('Players didnt change');
       for (var player in oldData.players) {
-        if(oldData.players[player].image === undefined){
+        if (oldData.players[player].image === undefined) {
           console.log('A player doesnt have a picture.');
           getImages = true;
         }
       }
-    }
-    else {
+    } else {
       getImages = true;
     }
-    if(getImages){
+    if (getImages) {
       console.log('Get Images');
       var playersId = [];
       var playersIdString;
@@ -250,7 +285,7 @@ CsgoData.prototype.getPlayerImages = function(newData, oldData) {
         for (var i = 0; i < steamResponse.response.players.length; i++) {
           steamid = steamResponse.response.players[i].steamid;
           for (var player in newData.players) {
-            if(newData.players[player].steamid === steamid){
+            if (newData.players[player].steamid === steamid) {
               newData.players[player].image = steamResponse.response.players[i].avatarmedium;
               break;
             }
@@ -258,8 +293,7 @@ CsgoData.prototype.getPlayerImages = function(newData, oldData) {
         }
         fulfill(newData);
       });
-    }
-    else {
+    } else {
       console.log('no need to call. We pick the last pictures.');
       for (var key in newData.players) {
         newData.players[key].image = oldData.players[key].image;
