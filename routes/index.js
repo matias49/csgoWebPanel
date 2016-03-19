@@ -98,6 +98,10 @@ router.post(CONFIG.POST_PAGE, function(req, res) {
               'text': 'Round ' + csgo.map.round + ' is on buytime.'
             });
             console.log(csgo.logWinningTeam());
+            // If the tab doesn't have the focus, we notify the user the score on the freezetime phase.
+            io.emit('notification',{
+              'text': csgo.logWinningTeam()
+            });
             break;
           case 'live':
             console.log('Round ' + csgo.map.round + ' is now live.');
