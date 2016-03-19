@@ -21,6 +21,13 @@ socket.on('teamT', function(data) {
   $("#teamT .score").text(data.score);
 });
 
+// We send the notification to the user only if he isn't watching the tab
+socket.on('notification', function(data){
+  if(!document.hasFocus()){
+    notifyUser(data.text);
+  }
+})
+
 socket.on('players', function(data) {
   for (var i = 0; i < data.players.length; i++) {
     var player = data.players[i];
@@ -51,6 +58,21 @@ socket.on('playersImages', function(data){
     $("#player" + i + " .playerImage").attr("src", player.image);
   }
 });
+
+function notifyUser(text){
+  if ("Notification" in window) {
+    if (Notification.permission === "granted") {
+      var notification = new Notification("CSGO Spectator", {body : text});
+    }
+    else {
+      Notification.requestPermission(function (permission) {
+      if (permission === "granted") {
+        var notification = new Notification("CSGO Spectator", {body : text});
+      }
+    });
+    }
+  }
+}
 
 // Button behaviour
 $('#playersSeeScoreboard').click(function() {
