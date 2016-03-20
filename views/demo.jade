@@ -7,11 +7,13 @@ block content
         h1#title CSGO Web Spectator Panel
       div.col-md-3.text-center
         h2#status Status
-      div.col-md-3.col-md-offset-1.text-center
-        div.row
+      div.col-md-4.col-md-offset-1.text-center
+        div.row.text-right
+          span.glyphicon.glyphicon-menu-hamburger#showOptions(aria-hidden="true" enabled="false")
+        div.row.option
           input(type="checkbox" id="playersSeeScoreboard")
           label(for="playersSeeScoreboard") Players can see this scoreboard
-        div.row
+        div.row.option
           input(type="checkbox" id="hideLog")
           label(for="hideLog") Hide log
     div.row

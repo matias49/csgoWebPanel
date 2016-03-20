@@ -92,3 +92,16 @@ $('#hideLog').click(function() {
     $('#log').show();
   }
 });
+
+$('#showOptions').click(function() {
+  console.log($('#showOptions').attr('enabled') )
+  // We show the options if the button wasn't clicked
+  if($('#showOptions').attr('enabled') == 'false'){
+    $('.option').show();
+    $('#showOptions').attr('enabled', 'true');
+  }
+  else {
+    $('.option').hide();
+    $('#showOptions').attr('enabled', 'false');
+  }
+});

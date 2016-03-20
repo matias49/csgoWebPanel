@@ -7,6 +7,10 @@ body {
 a {
   color: #00B7FF;
 }
+
+.option {
+  display:none;
+}
 .playersTeam {
   background-color: rgba(0, 0, 0, 0.59);
   color: white;
