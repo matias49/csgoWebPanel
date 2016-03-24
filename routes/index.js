@@ -24,7 +24,8 @@ io.on('connection', function (socket) {
     });
 
     io.emit('players', {
-      'players': csgo.players
+      'ct': csgo.getCTPlayers(),
+      't' : csgo.getTPlayers()
     });
 
     csgo.getPlayerImages(csgo, oldCsgo).then(function(res) {
@@ -79,7 +80,8 @@ router.post(CONFIG.POST_PAGE, function(req, res) {
     });
 
     io.emit('players', {
-      'players': csgo.players
+      'ct': csgo.getCTPlayers(),
+      't' : csgo.getTPlayers()
     });
 
     csgo.getPlayerImages(csgo, oldCsgo).then(function(res) {

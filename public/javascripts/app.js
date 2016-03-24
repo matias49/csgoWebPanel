@@ -29,9 +29,10 @@ socket.on('notification', function(data){
 })
 
 socket.on('players', function(data) {
-  for (var i = 0; i < data.players.length; i++) {
-    var player = data.players[i];
-    console.log("Player " + player.name + "is on team " + player.team);
+  console.log(data);
+  for (var i = 0; i < data.ct.length; i++) {
+    var player = data.ct[i];
+    $("#player" + i).attr("steamid", player.steamid);
     $("#player" + i + " .playerInfo .playerName").text(player.name);
     $("#player" + i + " .playerMoney").text(player.money);
     // Health
@@ -54,12 +55,39 @@ socket.on('players', function(data) {
     $("#player" + i + " .playerScore").text(player.score);
     // $(".player"+i+" .playerName").text(player.roundKills);
   }
+  for (var i = 0; i < data.t.length; i++) {
+    var player = data.t[i];
+    $("#player" + (i+5)).attr("steamid", player.steamid);
+    $("#player" + (i+5) + " .playerInfo .playerName").text(player.name);
+    $("#player" + (i+5) + " .playerMoney").text(player.money);
+    // Health
+    $("#player" + (i+5) + " .playerHealth .progress-bar").attr("aria-valuenow", player.health);
+    $("#player" + (i+5) + " .playerHealth .progress-bar").css("width", player.health + "%");
+    $("#player" + (i+5) + " .playerHealth .progress-bar").text(player.health);
+    // Armor
+    $("#player" + (i+5) + " .playerArmor .progress-bar").attr("aria-valuenow", player.armor);
+    $("#player" + (i+5) + " .playerArmor .progress-bar").css("width", player.armor + "%");
+    $("#player" + (i+5) + " .playerArmor .progress-bar").text(player.armor);
+    $("#player" + (i+5) + " .playerImage").css("filter", function(){
+      var flashInt = parseInt(player.flashed);
+      var flashValue = 100+(flashInt*3);
+      return "brightness("+flashValue+"%)";
+    });
+    // More info
+    $("#player" + (i+5) + " .playerKills").text(player.kills);
+    $("#player" + (i+5) + " .playerDeaths").text(player.deaths);
+    $("#player" + (i+5) + " .playerAssists").text(player.assists);
+    $("#player" + (i+5) + " .playerScore").text(player.score);
+    // $(".player"+i+" .playerName").text(player.roundKills);
+  }
 });
 
 socket.on('playersImages', function(data){
+  console.log('nouvelles images');
   for (var i = 0; i < data.players.length; i++) {
     var player = data.players[i];
-    $("#player" + i + " .playerImage").attr("src", player.image);
+    console.log('ID : '+player.steamid+' - Image : '+player.image);
+    $(".player[steamid='"+player.steamid+"'] .playerImage").attr("src", player.image);
   }
 });
 

@@ -200,6 +200,17 @@ CsgoData.prototype.getWinnerTeamSide = function() {
   }
 };
 
+CsgoData.prototype.getCTPlayers = function(){
+  return this.players.filter(function (items){
+    return items.team == 'CT';
+  });
+};
+
+CsgoData.prototype.getTPlayers = function(){
+  return this.players.filter(function (items){
+    return items.team == 'T';
+  });
+};
 /**
  * Check if the game is on warmup phase
  * @return {Boolean} true if the game is on warmup phase, false otherwise
