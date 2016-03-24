@@ -10,29 +10,7 @@ var io = require('socket.io')(3001);
 
 io.on('connection', function (socket) {
   if(csgo !== undefined){
-    io.emit('mapInfo', {
-      'name': csgo.map.name,
-      'status': csgo.round.phase
-    });
-    io.emit('teamT', {
-      'name': csgo.team.t.name,
-      'score': csgo.team.t.score
-    });
-    io.emit('teamCT', {
-      'name': csgo.team.ct.name,
-      'score': csgo.team.ct.score
-    });
-
-    io.emit('players', {
-      'ct': csgo.getCTPlayers(),
-      't' : csgo.getTPlayers()
-    });
-
-    csgo.getPlayerImages(csgo, oldCsgo).then(function(res) {
-      io.emit('playersImages', {
-        'players': csgo.players
-      });
-    });
+    sendBaseData();
   }
 });
 
@@ -62,32 +40,7 @@ router.post(CONFIG.POST_PAGE, function(req, res) {
     csgo.sortPlayersByTeam();
     // console.log(csgo);
 
-
-    // Informations en cours de la partie
-    io.emit('mapInfo', {
-      'name': csgo.map.name,
-      'status': csgo.round.phase
-    });
-    io.emit('teamT', {
-      'name': csgo.team.t.name,
-      'score': csgo.team.t.score
-    });
-    io.emit('teamCT', {
-      'name': csgo.team.ct.name,
-      'score': csgo.team.ct.score
-    });
-
-    io.emit('players', {
-      'ct': csgo.getCTPlayers(),
-      't' : csgo.getTPlayers()
-    });
-
-    csgo.getPlayerImages(csgo, oldCsgo).then(function(res) {
-      io.emit('playersImages', {
-        'players': csgo.players
-      });
-    });
-
+    sendBaseData();
     // All the behaviour
     if (csgo.isWarmup()) {
       // console.log("WARMUP");
@@ -149,5 +102,32 @@ router.post(CONFIG.POST_PAGE, function(req, res) {
     console.log(req.body);
   }
 })
+
+function sendBaseData(){
+  // Informations en cours de la partie
+  io.emit('mapInfo', {
+    'name': csgo.map.name,
+    'status': csgo.round.phase
+  });
+  io.emit('teamT', {
+    'name': csgo.team.t.name,
+    'score': csgo.team.t.score
+  });
+  io.emit('teamCT', {
+    'name': csgo.team.ct.name,
+    'score': csgo.team.ct.score
+  });
+
+  io.emit('players', {
+    'ct': csgo.getCTPlayers(),
+    't' : csgo.getTPlayers()
+  });
+
+  csgo.getPlayerImages(csgo, oldCsgo).then(function(res) {
+    io.emit('playersImages', {
+      'players': csgo.players
+    });
+  });
+}
 
 module.exports = router;
