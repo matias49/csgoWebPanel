@@ -42,7 +42,11 @@ socket.on('players', function(data) {
     $("#player" + i + " .playerArmor .progress-bar").attr("aria-valuenow", player.armor);
     $("#player" + i + " .playerArmor .progress-bar").css("width", player.armor + "%");
     $("#player" + i + " .playerArmor .progress-bar").text(player.armor);
-
+    $("#player" + i + " .playerImage").css("filter", function(){
+      var flashInt = parseInt(player.flashed);
+      var flashValue = 100+(flashInt*3);
+      return "brightness("+flashValue+"%)";
+    });
     // More info
     $("#player" + i + " .playerKills").text(player.kills);
     $("#player" + i + " .playerDeaths").text(player.deaths);
