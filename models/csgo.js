@@ -332,8 +332,7 @@ CsgoData.prototype.getPlayerImages = function(newData, oldData) {
       for (var player in newData.players) {
         if (newData.players[player].steamid === oldData.players[player].steamid) {
           newData.players[player].image = oldData.players[player].image;
-          // Player found for the picture, no need to continue here
-          break;
+          continue;
         };
       }
       fulfill(newData);
