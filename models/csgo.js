@@ -319,8 +319,12 @@ CsgoData.prototype.getPlayerImages = function(newData, oldData) {
     } else {
       // We didn't call the API. We get the pictures from the n-1 data
       console.log('no need to call. We pick the last pictures.');
-      for (var key in newData.players) {
-        newData.players[key].image = oldData.players[key].image;
+      for (var player in newData.players) {
+        if (newData.players[player].steamid === oldData.players[player].steamid) {
+          newData.players[player].image = oldData.players[player].image;
+          // Player found for the picture, no need to continue here
+          break;
+        };
       }
       fulfill(newData);
     }
