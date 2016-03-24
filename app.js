@@ -25,7 +25,7 @@ app.use(cookieParser());
 app.use(sassMiddleware({
     /* Options */
     src: path.join(__dirname, 'scss'),
-    dest: path.join(__dirname, 'public'),
+    dest: path.join(__dirname, 'public/stylesheets'),
     debug: true,
     outputStyle: 'compressed',
     prefix: '/stylesheets'
