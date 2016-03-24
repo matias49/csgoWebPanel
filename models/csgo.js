@@ -249,7 +249,6 @@ CsgoData.prototype.getTeamPlayersAlive = function(teamSide) {
  * @return {boolean}         True if a player changed or is missing, false otherwise
  */
 CsgoData.prototype.IsPlayersChanged = function(oldData) {
-  console.log('IsPlayersChanged');
   for (var key in oldData.players) {
     if (this.players[key] === undefined) {
       return true;
