@@ -9,28 +9,30 @@ var oldCsgo, csgo;
 var io = require('socket.io')(3001);
 
 io.on('connection', function (socket) {
-  io.emit('mapInfo', {
-    'name': csgo.map.name,
-    'status': csgo.round.phase
-  });
-  io.emit('teamT', {
-    'name': csgo.team.t.name,
-    'score': csgo.team.t.score
-  });
-  io.emit('teamCT', {
-    'name': csgo.team.ct.name,
-    'score': csgo.team.ct.score
-  });
+  if(csgo !== undefined){
+    io.emit('mapInfo', {
+      'name': csgo.map.name,
+      'status': csgo.round.phase
+    });
+    io.emit('teamT', {
+      'name': csgo.team.t.name,
+      'score': csgo.team.t.score
+    });
+    io.emit('teamCT', {
+      'name': csgo.team.ct.name,
+      'score': csgo.team.ct.score
+    });
 
-  io.emit('players', {
-    'players': csgo.players
-  });
-
-  csgo.getPlayerImages(csgo, oldCsgo).then(function(res) {
-    io.emit('playersImages', {
+    io.emit('players', {
       'players': csgo.players
     });
-  });
+
+    csgo.getPlayerImages(csgo, oldCsgo).then(function(res) {
+      io.emit('playersImages', {
+        'players': csgo.players
+      });
+    });
+  }
 });
 
 /* GET home page. */
