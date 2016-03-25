@@ -3,7 +3,7 @@
 var socket = io.connect('http://192.168.63.128:3001');
 
 socket.on('info', function(data) {
-  $("#logText").append(data.text + "<br />");
+  $("#logText").prepend(data.text + "<br />");
 });
 
 socket.on('mapInfo', function(data) {
