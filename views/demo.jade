@@ -5,9 +5,9 @@ block content
     div.row
       div.col-md-4
         h1#title CSGO Web Spectator Panel
-      div.col-md-3.text-center
+      div.col-md-4.text-center
         h2#status Status
-      div.col-md-4.col-md-offset-1.text-center
+      div.col-md-4.text-center
         div.row.text-right
           span.glyphicon.glyphicon-menu-hamburger#showOptions(aria-hidden="true" enabled="false")
         div.row.option
@@ -17,19 +17,16 @@ block content
           input(type="checkbox" id="hideLog")
           label(for="hideLog") Hide log
     div.row
-      div.row.col-md-4.text-center#teamCT
-        h3.col-xs-6.team Team CT
-        h3.col-xs-6.score 10
-      div.col-md-2.col-md-offset-1.text-center
+      div.text-center
         h4#map De_dust2
-      div.row.col-md-4.col-md-offset-1.text-center#teamT
-        h3.col-xs-6.team Team T
-        h3.col-xs-6.score 14
     div.row
       div.col-md-5.playersTeam#teamCt
-        - for (var x = 0; x < 5; x++)
-          div.player(id='player'+x)
-            div.row
+        div.row.text-center.teamInfo
+          h3.col-xs-6.teamName Team CT
+          h3.col-xs-6.teamScore 10
+        div.players
+          - for (var x = 0; x < 5; x++)
+            div.row.player(class='player'+x)
               img.col-xs-2.playerImage(src="http://fakeimg.pl/100/")
               div.col-xs-10
                 div.row.playerInfo
@@ -54,12 +51,15 @@ block content
                   p.playerAssists.col-md-3 2
                   p.playerDeaths.col-md-3 10
                   p.playerScore.col-md-3 25
-      div.col-md-2#vs.hidden-xs.hidden-xm.text-center
-        p VS
-      div.col-md-5.playersTeam#teamT
-        - for (var x = 5; x < 10; x++)
-          div.player(id='player'+x)
-            div.row
+      //- div.col-md-2#vs.hidden-xs.hidden-xm.text-center
+      //-   p VS
+      div.col-md-5.col-md-offset-2.playersTeam#teamT
+        div.row.text-center.teamInfo
+          h3.col-xs-6.teamName Team T
+          h3.col-xs-6.teamScore 14
+        div.players
+          - for (var x = 0; x < 5; x++)
+            div.row.player(class='player'+x)
               img.col-xs-2.hidden-md.hidden-lg.playerImage(src="http://fakeimg.pl/100/")
               div.col-xs-10
                 div.row.playerInfo
