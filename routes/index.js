@@ -8,8 +8,8 @@ var oldCsgo, csgo;
 // We set the socket port
 var io = require('socket.io')(3001);
 
-io.on('connection', function (socket) {
-  if(csgo !== undefined){
+io.on('connection', function(socket) {
+  if (csgo !== undefined) {
     sendBaseData();
   }
 });
