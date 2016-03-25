@@ -320,7 +320,7 @@ CsgoData.prototype.getPlayerImages = function(newData, oldData) {
             if (newData.players[player].steamid === steamid) {
               newData.players[player].image = steamResponse.response.players[i].avatarmedium;
               // Player found for the picture, no need to continue here
-              break;
+              continue;
             }
           }
         }
