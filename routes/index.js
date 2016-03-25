@@ -105,8 +105,8 @@ router.post(CONFIG.POST_PAGE, function(req, res) {
 
 function sendBaseData() {
   io.emit('swapTeams', {
-    'round': csgo.map.round
-    'status': csgo.round.phase
+    'round': csgo.map.round,
+    'phase': csgo.round.phase
   });
   // Informations en cours de la partie
   io.emit('mapInfo', {
