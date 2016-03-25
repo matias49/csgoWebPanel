@@ -8,7 +8,7 @@ socket.on('info', function(data) {
 });
 
 socket.on('mapInfo', function(data) {
-  $("#map").text("Map : " + data.name);
+  $("#map").text(data.name);
   $("#status").text(data.status);
 });
 
