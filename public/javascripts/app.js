@@ -69,11 +69,16 @@ function updatePlayers(players, team){
   for (var i = 0; i < players.length; i++) {
     var player = players[i];
     var id = "#team"+team+" .player"+i;
-    console.log(id);
     $(id).attr("steamid", player.steamid);
     $(id+" .playerInfo .playerName").text(player.name);
     $(id+" .playerMoney").text(player.money);
     // Health
+    if(player.health == 0){
+      $(id).addClass("dead");
+    }
+    else {
+      $(id).removeClass("dead");
+    }
     $(id+" .playerHealth .progress-bar").attr("aria-valuenow", player.health);
     $(id+" .playerHealth .progress-bar").css("width", player.health + "%");
     $(id+" .playerHealth .progress-bar").text(player.health);

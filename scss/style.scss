@@ -42,6 +42,10 @@ a {
   font-size: 3rem;
 }
 
+.dead {
+  filter: brightness(15%);
+}
+
 .playerInfo p {
   margin-bottom: 3px;
 }
