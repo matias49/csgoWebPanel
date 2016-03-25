@@ -1,6 +1,7 @@
 // Socket behaviour
 
 var socket = io.connect('http://192.168.63.128:3001');
+var teamSwaped = false;
 
 socket.on('info', function(data) {
   $("#logText").prepend(data.text + "<br />");
@@ -12,13 +13,13 @@ socket.on('mapInfo', function(data) {
 });
 
 socket.on('teamCT', function(data) {
-  $("#teamCT .team").text(data.name);
-  $("#teamCT .score").text(data.score);
+  $("#teamCT .teamName").text(data.name);
+  $("#teamCT .teamScore").text(data.score);
 });
 
 socket.on('teamT', function(data) {
-  $("#teamT .team").text(data.name);
-  $("#teamT .score").text(data.score);
+  $("#teamT .teamName").text(data.name);
+  $("#teamT .teamScore").text(data.score);
 });
 
 // We send the notification to the user only if he isn't watching the tab
@@ -28,66 +29,24 @@ socket.on('notification', function(data){
   }
 })
 
+socket.on('swapTeams', function(data){
+  if((data.round >= 16 && data.phase != 'over' && !teamSwaped) || (data.round <= 15 && teamSwaped)){
+    $('#teamT').attr('id', 'oldTeamT');
+    $('#teamCT').attr('id', 'teamT');
+    $('#oldTeamT').attr('id', 'teamCT');
+    teamSwaped = teamSwaped ? false : true;
+  }
+
+})
+
 socket.on('players', function(data) {
-  console.log(data);
-  for (var i = 0; i < data.ct.length; i++) {
-    var player = data.ct[i];
-    $("#player" + i).attr("steamid", player.steamid);
-    $("#player" + i + " .playerInfo .playerName").text(player.name);
-    $("#player" + i + " .playerMoney").text(player.money);
-    // Health
-    $("#player" + i + " .playerHealth .progress-bar").attr("aria-valuenow", player.health);
-    $("#player" + i + " .playerHealth .progress-bar").css("width", player.health + "%");
-    $("#player" + i + " .playerHealth .progress-bar").text(player.health);
-    // Armor
-    $("#player" + i + " .playerArmor .progress-bar").attr("aria-valuenow", player.armor);
-    $("#player" + i + " .playerArmor .progress-bar").css("width", player.armor + "%");
-    $("#player" + i + " .playerArmor .progress-bar").text(player.armor);
-    $("#player" + i + " .playerImage").css("filter", function(){
-      var flashInt = parseInt(player.flashed);
-      var flashValue = 100+(flashInt*3);
-      return "brightness("+flashValue+"%)";
-    });
-    // More info
-    $("#player" + i + " .playerKills").text(player.kills);
-    $("#player" + i + " .playerDeaths").text(player.deaths);
-    $("#player" + i + " .playerAssists").text(player.assists);
-    $("#player" + i + " .playerScore").text(player.score);
-    // $(".player"+i+" .playerName").text(player.roundKills);
-  }
-  for (var i = 0; i < data.t.length; i++) {
-    var player = data.t[i];
-    $("#player" + (i+5)).attr("steamid", player.steamid);
-    $("#player" + (i+5) + " .playerInfo .playerName").text(player.name);
-    $("#player" + (i+5) + " .playerMoney").text(player.money);
-    // Health
-    $("#player" + (i+5) + " .playerHealth .progress-bar").attr("aria-valuenow", player.health);
-    $("#player" + (i+5) + " .playerHealth .progress-bar").css("width", player.health + "%");
-    $("#player" + (i+5) + " .playerHealth .progress-bar").text(player.health);
-    // Armor
-    $("#player" + (i+5) + " .playerArmor .progress-bar").attr("aria-valuenow", player.armor);
-    $("#player" + (i+5) + " .playerArmor .progress-bar").css("width", player.armor + "%");
-    $("#player" + (i+5) + " .playerArmor .progress-bar").text(player.armor);
-    $("#player" + (i+5) + " .playerImage").css("filter", function(){
-      var flashInt = parseInt(player.flashed);
-      var flashValue = 100+(flashInt*3);
-      return "brightness("+flashValue+"%)";
-    });
-    // More info
-    $("#player" + (i+5) + " .playerKills").text(player.kills);
-    $("#player" + (i+5) + " .playerDeaths").text(player.deaths);
-    $("#player" + (i+5) + " .playerAssists").text(player.assists);
-    $("#player" + (i+5) + " .playerScore").text(player.score);
-    // $(".player"+i+" .playerName").text(player.roundKills);
-  }
+  updatePlayers(data.ct,"CT");
+  updatePlayers(data.t,"T");
 });
 
 socket.on('playersImages', function(data){
-  console.log('nouvelles images');
-  for (var i = 0; i < data.players.length; i++) {
-    var player = data.players[i];
-    console.log('ID : '+player.steamid+' - Image : '+player.image);
-    $(".player[steamid='"+player.steamid+"'] .playerImage").attr("src", player.image);
+  for (var key in data.players) {
+    $(".player[steamid='"+data.players[key].steamid+"'] .playerImage").attr("src", data.players[key].image);
   }
 });
 
@@ -103,6 +62,36 @@ function notifyUser(text){
       }
     });
     }
+  }
+}
+
+function updatePlayers(players, team){
+  for (var i = 0; i < players.length; i++) {
+    var player = players[i];
+    var id = "#team"+team+" .player"+i;
+    console.log(id);
+    $(id).attr("steamid", player.steamid);
+    $(id+" .playerInfo .playerName").text(player.name);
+    $(id+" .playerMoney").text(player.money);
+    // Health
+    $(id+" .playerHealth .progress-bar").attr("aria-valuenow", player.health);
+    $(id+" .playerHealth .progress-bar").css("width", player.health + "%");
+    $(id+" .playerHealth .progress-bar").text(player.health);
+    // Armor
+    $(id+" .playerArmor .progress-bar").attr("aria-valuenow", player.armor);
+    $(id+" .playerArmor .progress-bar").css("width", player.armor + "%");
+    $(id+" .playerArmor .progress-bar").text(player.armor);
+    $(id+" .playerImage").css("filter", function(){
+      var flashInt = parseInt(player.flashed);
+      var flashValue = 100+(flashInt*3);
+      return "brightness("+flashValue+"%)";
+    });
+    // More info
+    $(id+" .playerKills").text(player.kills);
+    $(id+" .playerDeaths").text(player.deaths);
+    $(id+" .playerAssists").text(player.assists);
+    $(id+" .playerScore").text(player.score);
+    // $(".player"+i+" .playerName").text(player.roundKills);
   }
 }
 

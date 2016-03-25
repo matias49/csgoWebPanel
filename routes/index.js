@@ -103,7 +103,11 @@ router.post(CONFIG.POST_PAGE, function(req, res) {
   }
 })
 
-function sendBaseData(){
+function sendBaseData() {
+  io.emit('swapTeams', {
+    'round': csgo.map.round
+    'status': csgo.round.phase
+  });
   // Informations en cours de la partie
   io.emit('mapInfo', {
     'name': csgo.map.name,
@@ -120,7 +124,7 @@ function sendBaseData(){
 
   io.emit('players', {
     'ct': csgo.getCTPlayers(),
-    't' : csgo.getTPlayers()
+    't': csgo.getTPlayers()
   });
 
   csgo.getPlayerImages(csgo, oldCsgo).then(function(res) {
