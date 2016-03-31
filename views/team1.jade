@@ -1,0 +1,52 @@
+extends layout
+
+block content
+  div.container-fluid
+    div.row
+      div.col-md-4
+        h1#title CSGO Web Spectator Panel
+      div.col-md-4.text-center
+        h2#status Status
+      div.col-md-1.text-center
+        img#bombIcon(src="")
+      div.col-md-3.text-center
+        div.row.text-right
+          span.glyphicon.glyphicon-menu-hamburger#showOptions(aria-hidden="true" enabled="false")
+        div.row.option
+          input(type="checkbox" id="playersSeeScoreboard")
+          label(for="playersSeeScoreboard") Players can see this scoreboard
+        div.row.option
+          input(type="checkbox" id="hideLog")
+          label(for="hideLog") Hide log
+    div.row
+      div.text-center
+        h4#map De_dust2
+    div.row
+      div.col-md-12.playersTeam#teamCT
+        div.row.text-center.teamInfo
+          h3.col-xs-6.teamName Team CT
+          h3.col-xs-6.teamScore 10
+        div.row.players
+          - for (var x = 0; x < 5; x++)
+            div.col-md-2.row.player(class='player'+x)
+              div.row.playerInfo
+                p.playerName.col-md-6 Matias49
+                p.playerMoney.text-right.col-md-6 16000
+              div.row.text-center
+                img.playerImage(src="http://fakeimg.pl/100/")
+              div.row.no-padding
+                div.playerLife.col-md-6.no-padding
+                  div.playerHealth.col-md-6.no-padding
+                    div.col-xs-5.logo
+                      img(src="../images/healthicon.png")
+                    div.col-xs-7.value 30
+                  div.playerArmor.col-md-6.no-padding
+                    div.col-xs-5
+                      img(src="../images/armorHeadicon.png")
+                    div.col-xs-7.value 30
+                div.row.col-md-6.moreInfo.no-padding.text-right.single 10/15/20
+    div.row#log
+      p.col-md-1 Log : 
+      p.col-md-11#logText
+    div.row#copyright
+      p &copy; 2016 Matias49/KwaKze - Open Source, here is the GitHub repo!

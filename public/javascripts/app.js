@@ -103,23 +103,37 @@ function updatePlayers(players, team) {
     } else {
       $(id).removeClass("dead");
     }
-    $(id + " .playerHealth .progress-bar").attr("aria-valuenow", player.health);
-    $(id + " .playerHealth .progress-bar").css("width", player.health + "%");
-    $(id + " .playerHealth .progress-bar").text(player.health);
-    // Armor
-    $(id + " .playerArmor .progress-bar").attr("aria-valuenow", player.armor);
-    $(id + " .playerArmor .progress-bar").css("width", player.armor + "%");
-    $(id + " .playerArmor .progress-bar").text(player.armor);
+    if ($(id).has("playerBars")){
+      $(id + " .playerBars .playerHealth .progress-bar").attr("aria-valuenow", player.health);
+      $(id + " .playerBars .playerHealth .progress-bar").css("width", player.health + "%");
+      $(id + " .playerBars .playerHealth .progress-bar").text(player.health);
+      // Armor
+      $(id + " .playerBars .playerArmor .progress-bar").attr("aria-valuenow", player.armor);
+      $(id + " .playerBars .playerArmor .progress-bar").css("width", player.armor + "%");
+      $(id + " .playerBars .playerArmor .progress-bar").text(player.armor);
+    }
+    if($(id).has("playerLife")){
+      $(id + " .playerLife .playerHealth .value").text(player.health);
+      $(id + " .playerLife .playerArmor .value").text(player.armor);
+    }
+
     $(id + " .playerImage").css("filter", function() {
       var flashInt = parseInt(player.flashed);
       var flashValue = 100 + (flashInt * 3);
       return "brightness(" + flashValue + "%)";
     });
+
     // More info
-    $(id + " .playerKills").text(player.kills);
-    $(id + " .playerDeaths").text(player.deaths);
-    $(id + " .playerAssists").text(player.assists);
-    $(id + " .playerScore").text(player.score);
+    // If the more info section doesn't have a "single" class, we will update each class
+    if($(id + " .moreInfo").hasClass("single")){
+      $(id + " .moreInfo").text(player.kills+"/"+player.assists+"/"+player.deaths);
+    }
+    else {
+      $(id + " .playerKills").text(player.kills);
+      $(id + " .playerDeaths").text(player.deaths);
+      $(id + " .playerAssists").text(player.assists);
+      $(id + " .playerScore").text(player.score);
+    }
     // $(".player"+i+" .playerName").text(player.roundKills);
   }
 }

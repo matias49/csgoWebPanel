@@ -53,36 +53,35 @@ a {
   font-size: 12rem;
   vertical-align: middle;
 }
-.playerArmor,
-.playerHealth {
-  font-size: 0.5rem;
+.playerBars{
+  &.playerArmor,
+  &.playerHealth {
+    font-size: 0.5rem;
+  }
 }
+
+.playerLife{
+  .value{
+    font-size: 2rem;
+  }
+}
+
 #map::before {
   content: 'Map : ';
 }
 .playerMoney:before {
   content: '$';
 }
-.playerKills:before {
-  content: 'K : ';
-}
-.playerAssists:before {
-  content: 'D : ';
-}
-.playerDeaths:before {
-  content: 'A : ';
-}
-.playerScore:before {
-  content: 'Score : ';
-}
-.playerAssists:before,
-.playerDeaths:before,
-.playerKills:before,
-.playerScore:before {
+
+.playerValueIntro {
   background-color: rgb(0, 0, 0);
   border: 1px solid gray;
   margin-right: 0.5rem;
 }
 #bombIcon {
   margin-top: 1rem;
+}
+
+.no-padding{
+  padding: 0;
 }

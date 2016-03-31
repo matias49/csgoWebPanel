@@ -25,6 +25,13 @@ router.get('/demo', function(req, res, next) {
   res.render('demo');
 });
 
+router.get('/team1', function(req, res, next) {
+  res.render('team1');
+});
+router.get('/team2', function(req, res, next) {
+  res.render('team2');
+});
+
 
 router.post(CONFIG.POST_PAGE, function(req, res) {
   try {
