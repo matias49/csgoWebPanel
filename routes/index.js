@@ -100,6 +100,7 @@ router.post(CONFIG.POST_PAGE, function(req, res) {
     console.error("DEBUG");
     console.log(e);
     console.log(req.body);
+    io.emit('noData');
   }
 })
 

@@ -50,6 +50,10 @@ socket.on('playersImages', function(data){
   }
 });
 
+socket.on('noData', function(){
+  $("#status").text("Waiting for data...");
+});
+
 function notifyUser(text){
   if ("Notification" in window) {
     if (Notification.permission === "granted") {
