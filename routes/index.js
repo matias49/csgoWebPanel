@@ -128,6 +128,10 @@ function sendBaseData() {
     't': csgo.getTPlayers()
   });
 
+  io.emit('bombStatus',{
+    'status' : csgo.round.bomb
+  });
+  
   csgo.getPlayerImages(csgo, oldCsgo).then(function(res) {
     io.emit('playersImages', {
       'players': csgo.players

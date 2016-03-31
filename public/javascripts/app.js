@@ -54,7 +54,25 @@ socket.on('noData', function(){
   $("#status").text("Waiting for data...");
 });
 
-function notifyUser(text){
+socket.on('bombStatus', function(data) {
+  // console.log(data);
+  switch(data.status) {
+    case 'planted':
+      $("#bombIcon").attr("src", "images/c4_planted.png");
+      $("#bombIcon").show();
+      break;
+    case 'defused':
+      $("#bombIcon").attr("src", "images/c4_defused.png");
+      $("#bombIcon").show();
+      break;
+    default:
+      $("#bombIcon").attr("src", "");
+      $("#bombIcon").hide();
+      break;
+  }
+});
+
+function notifyUser(text) {
   if ("Notification" in window) {
     if (Notification.permission === "granted") {
       var notification = new Notification("CSGO Spectator", {body : text});
