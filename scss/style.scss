@@ -4,15 +4,12 @@ body {
   background: url('../images/background.jpg');
   color: white;
 }
-
 a {
   color: #00B7FF;
 }
-
 .option {
   display: none;
 }
-
 .playersTeam {
   background-color: rgba(0, 0, 0, 0.59);
   color: white;
@@ -29,70 +26,59 @@ a {
     background-position: center center;
   }
 }
-
 .moreInfo {
   font-size: 2rem;
 }
-
 .player {
   background-color: rgba(0, 0, 0, 0.7);
   margin: 1rem 0;
-  padding: 1rem 1rem;
+  padding: 1rem;
   border: 1px solid white;
   font-size: 3rem;
 }
-
 .dead {
   filter: brightness(15%);
 }
-
 .playerInfo p {
   margin-bottom: 3px;
 }
-
 .playerMoney {
   color: rgb(17, 214, 0);
   font-size: 3.5rem;
 }
-
 #log {
   margin-top: 2rem;
 }
-
 #vs {
   font-size: 12rem;
   vertical-align: middle;
 }
-
-.playerHealth, .playerArmor {
+.playerArmor,
+.playerHealth {
   font-size: 0.5rem;
 }
-
 #map::before {
   content: 'Map : ';
 }
-
 .playerMoney:before {
   content: '$';
 }
-
 .playerKills:before {
   content: 'K : ';
 }
-
 .playerAssists:before {
   content: 'D : ';
 }
-
 .playerDeaths:before {
   content: 'A : ';
 }
-
 .playerScore:before {
   content: 'Score : ';
 }
-
-.playerKills:before, .playerAssists:before, .playerDeaths:before, .playerScore:before {
+.playerAssists:before,
+.playerDeaths:before,
+.playerKills:before,
+.playerScore:before {
   background-color: rgb(0, 0, 0);
   border: 1px solid gray;
   margin-right: 0.5rem;
