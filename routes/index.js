@@ -3,7 +3,8 @@ var headersModel = require('../models/headers');
 var csgoModel = require('../models/csgo');
 var router = express.Router();
 var CONFIG = require('../config/config');
-var oldCsgo, csgo;
+var oldCsgo = [];
+var csgo;
 
 // We set the socket port
 var io = require('socket.io')(3001);
@@ -21,15 +22,21 @@ router.get('/', function(req, res, next) {
   });
 });
 
-router.get('/demo', function(req, res, next) {
-  res.render('demo');
+router.get('/:channel/demo', function(req, res, next) {
+  res.render('demo', {
+    'channel': req.params.channel
+  });
 });
 
-router.get('/team1', function(req, res, next) {
-  res.render('team1');
+router.get('/:channel/team1', function(req, res, next) {
+  res.render('team1', {
+    'channel' : req.params.channel
+  });
 });
-router.get('/team2', function(req, res, next) {
-  res.render('team2');
+router.get('/:channel/team2', function(req, res, next) {
+  res.render('team2', {
+    'channel' : req.params.channel
+  });
 });
 
 
@@ -42,35 +49,47 @@ router.post(CONFIG.POST_PAGE, function(req, res) {
       return null;
     }
     // We keep the last information given to compare with the new one
-    oldCsgo = csgo;
     csgo = new csgoModel(req.body);
+    // console.log(oldcsgo);
+    var channel = csgo.auth.token;
+    // Channel name must start with / and must contain only alphanumeric characters
+    if(!/^\/\w*$/.test(channel)){
+      return null;
+    }
+    if(oldCsgo[channel] !== undefined){
+      if(oldCsgo[channel].provider.steamid != csgo.provider.steamid && oldCsgo[channel].provider.timestamp - csgo.provider.timestamp < 500){
+        return null;
+      }
+    }
+
+    oldCsgo[channel] = csgo;
     csgo.sortPlayersByTeam();
     // console.log(csgo);
 
-    sendBaseData();
+    sendBaseData(channel);
     // All the behaviour
     if (csgo.isWarmup()) {
       // console.log("WARMUP");
     } else {
-      if (csgo.isStatusChanged(oldCsgo)) {
+      if (csgo.isStatusChanged(oldCsgo[channel])) {
         switch (csgo.round.phase) {
           case 'freezetime':
-            io.emit('info', {
+            io.of(channel).emit('info', {
               'text': 'Round ' + csgo.map.round + ' is on buytime.'
             });
             // If the tab doesn't have the focus, we notify the user the score on the freezetime phase.
-            io.emit('notification',{
+            io.of(channel).emit('notification',{
               'text': csgo.logWinningTeam()
             });
             break;
           case 'live':
-            io.emit('info', {
+            io.of(channel).emit('info', {
               'text': 'Round ' + csgo.map.round + ' is now live.'
             });
             break;
           case 'over':
             // GSI already increments the round number when the round is over. no, please.
-            io.emit('info', {
+            io.of(channel).emit('info', {
               'text': 'Round ' + (csgo.map.round - 1) + ' just ended. ' + csgo.getWinnerTeamName() + ' won the round with ' + csgo.getTeamPlayersAlive(csgo.getWinnerTeamSide()) + ' players alive.'
             });
             break;
@@ -80,18 +99,18 @@ router.post(CONFIG.POST_PAGE, function(req, res) {
         }
       }
 
-      if (csgo.isBombStatusChanged(oldCsgo)) {
+      if (csgo.isBombStatusChanged(oldCsgo[channel])) {
         if (csgo.round.bomb === 'planted') {
-          io.emit('info', {
+          io.of(channel).emit('info', {
             'text': 'Bomb has been planted.'
           });
 
         } else if (csgo.round.bomb === 'defused') {
-          io.emit('info', {
+          io.of(channel).emit('info', {
             'text': 'Bomb has been defused.'
           });
         } else if (csgo.round.bomb === '' && oldCsgo.round.bomb === 'planted') {
-          io.emit('info', {
+          io.of(channel).emit('info', {
             'text': 'Bomb might exploded.'
           });
         } else if (csgo.round.bomb === '') {
@@ -107,40 +126,40 @@ router.post(CONFIG.POST_PAGE, function(req, res) {
     console.error("DEBUG");
     console.log(e);
     console.log(req.body);
-    io.emit('noData');
+    io.of(channel).emit('noData');
   }
 })
 
-function sendBaseData() {
-  io.emit('swapTeams', {
+function sendBaseData(channel) {
+  io.of(channel).emit('swapTeams', {
     'round': csgo.map.round,
     'phase': csgo.round.phase
   });
   // Informations en cours de la partie
-  io.emit('mapInfo', {
+  io.of(channel).emit('mapInfo', {
     'name': csgo.map.name,
     'status': csgo.round.phase
   });
-  io.emit('teamT', {
+  io.of(channel).emit('teamT', {
     'name': csgo.team.t.name,
     'score': csgo.team.t.score
   });
-  io.emit('teamCT', {
+  io.of(channel).emit('teamCT', {
     'name': csgo.team.ct.name,
     'score': csgo.team.ct.score
   });
 
-  io.emit('players', {
+  io.of(channel).emit('players', {
     'ct': csgo.getCTPlayers(),
     't': csgo.getTPlayers()
   });
 
-  io.emit('bombStatus',{
+  io.of(channel).emit('bombStatus',{
     'status' : csgo.round.bomb
   });
-  
-  csgo.getPlayerImages(csgo, oldCsgo).then(function(res) {
-    io.emit('playersImages', {
+
+  csgo.getPlayerImages(csgo, oldCsgo[channel]).then(function(res) {
+    io.of(channel).emit('playersImages', {
       'players': csgo.players
     });
   });
