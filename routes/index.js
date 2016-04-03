@@ -10,8 +10,10 @@ var csgo;
 var io = require('socket.io')(3001);
 
 io.on('connection', function(socket) {
-  if (csgo !== undefined) {
-    sendBaseData();
+  var path = socket.request.headers.referer.match(/\/\w+\//g)[0].match(/\/\w+/g);
+  console.log(path[0]);
+  if (oldCsgo[path[0]] !== undefined) {
+    sendBaseData(oldCsgo[path[0]]);
   }
 });
 
@@ -61,8 +63,10 @@ router.post(CONFIG.POST_PAGE, function(req, res) {
         return null;
       }
     }
+    if(oldCsgo[channel] === undefined){
+      oldCsgo[channel] = csgo;
+    }
 
-    oldCsgo[channel] = csgo;
     csgo.sortPlayersByTeam();
     // console.log(csgo);
 
@@ -109,7 +113,7 @@ router.post(CONFIG.POST_PAGE, function(req, res) {
           io.of(channel).emit('info', {
             'text': 'Bomb has been defused.'
           });
-        } else if (csgo.round.bomb === '' && oldCsgo.round.bomb === 'planted') {
+        } else if (csgo.round.bomb === '' && oldCsgo[channel].round.bomb === 'planted') {
           io.of(channel).emit('info', {
             'text': 'Bomb might exploded.'
           });
@@ -121,6 +125,7 @@ router.post(CONFIG.POST_PAGE, function(req, res) {
       }
     }
     // console.log(csgo.map);
+    oldCsgo[channel] = csgo;
     res.send('');
   } catch (e) {
     console.error("DEBUG");

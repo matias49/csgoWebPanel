@@ -56,11 +56,11 @@ socket.on('bombStatus', function(data) {
   // console.log(data);
   switch(data.status) {
     case 'planted':
-      $("#bombIcon").attr("src", "images/c4_planted.png");
+      $("#bombIcon").attr("src", "/images/c4_planted.png");
       $("#bombIcon").show();
       break;
     case 'defused':
-      $("#bombIcon").attr("src", "images/c4_defused.png");
+      $("#bombIcon").attr("src", "/images/c4_defused.png");
       $("#bombIcon").show();
       break;
     default:
