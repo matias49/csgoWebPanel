@@ -26,9 +26,9 @@ block content
         div.row.text-center.teamInfo
           h3.col-xs-6.teamName Team CT
           h3.col-xs-6.teamScore 10
-        div.row.players
+        div.players
           - for (var x = 0; x < 5; x++)
-            div.col-md-2.row.player(class='player'+x)
+            div.row.col-md-5.col-md-offset-1.player(class='player'+x)
               div.row.playerInfo
                 p.playerName.col-md-6 Matias49
                 p.playerMoney.text-right.col-md-6 16000

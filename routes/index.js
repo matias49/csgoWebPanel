@@ -9,13 +9,13 @@ var csgo;
 // We set the socket port
 var io = require('socket.io')(3001);
 
-io.on('connection', function(socket) {
-  var path = socket.request.headers.referer.match(/\/\w+\//g)[0].match(/\/\w+/g);
-  console.log(path[0]);
-  if (oldCsgo[path[0]] !== undefined) {
-    sendBaseData(oldCsgo[path[0]]);
-  }
-});
+//io.on('connection', function(socket) {
+//  var path = socket.request.headers.referer.match(/\/\w+\//g)[0].match(/\/\w+/g);
+//  console.log(path[0]);
+//  if (oldCsgo[path[0]] !== undefined) {
+//    sendBaseData(oldCsgo[path[0]]);
+//  }
+//});
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
