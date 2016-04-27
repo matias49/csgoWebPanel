@@ -2,7 +2,7 @@
 
 var CONFIG = {
   'POST_PAGE': '/csgo',
-  'IP': '192.168.63.120',
+  'IP': 'YOUR_IP',
   'VERIFY_IP': 0,
   'TOKEN': 'TOKEN_AUTH',
   'VERIFY_TOKEN': 0,

@@ -1,4 +1,6 @@
 // Socket behaviour
+
+var socket = io.connect('http://127.0.0.1:3001');
 var teamSwaped = false;
 
 socket.on('info', function(data) {
