@@ -1,6 +1,4 @@
 // Socket behaviour
-
-var socket = io.connect('http://192.168.63.128:3001');
 var teamSwaped = false;
 
 socket.on('info', function(data) {
@@ -58,11 +56,11 @@ socket.on('bombStatus', function(data) {
   // console.log(data);
   switch(data.status) {
     case 'planted':
-      $("#bombIcon").attr("src", "images/c4_planted.png");
+      $("#bombIcon").attr("src", "/images/c4_planted.png");
       $("#bombIcon").show();
       break;
     case 'defused':
-      $("#bombIcon").attr("src", "images/c4_defused.png");
+      $("#bombIcon").attr("src", "/images/c4_defused.png");
       $("#bombIcon").show();
       break;
     default:
@@ -103,7 +101,7 @@ function updatePlayers(players, team) {
     } else {
       $(id).removeClass("dead");
     }
-    if ($(id).has("playerBars")){
+    if ($(id).has("div.playerBars").length > 0){
       $(id + " .playerBars .playerHealth .progress-bar").attr("aria-valuenow", player.health);
       $(id + " .playerBars .playerHealth .progress-bar").css("width", player.health + "%");
       $(id + " .playerBars .playerHealth .progress-bar").text(player.health);
@@ -112,7 +110,7 @@ function updatePlayers(players, team) {
       $(id + " .playerBars .playerArmor .progress-bar").css("width", player.armor + "%");
       $(id + " .playerBars .playerArmor .progress-bar").text(player.armor);
     }
-    if($(id).has("playerLife")){
+    if($(id).has("div.playerLife").length > 0){
       $(id + " .playerLife .playerHealth .value").text(player.health);
       $(id + " .playerLife .playerArmor .value").text(player.armor);
     }
@@ -141,10 +139,22 @@ function updatePlayers(players, team) {
 // Button behaviour
 $('#playersSeeScoreboard').click(function() {
   if ($('#playersSeeScoreboard').is(':checked')) {
-    $('.playerBars').hide();
+    if ($('.player').has("div.playerBars").length > 0) {
+      $('.playerBars').hide();
+    }
+    if ($('.player').has("div.playerLife").length > 0) {
+      $('.playerLife').hide();
+      $('.moreInfo').toggleClass("col-md-offset-5");
+    }
     $('.playerMoney').hide();
   } else {
-    $('.playerBars').show();
+    if ($('.player').has("div.playerBars").length > 0) {
+      $('.playerBars').show();
+    }
+    if ($('.player').has("div.playerLife").length > 0) {
+      $('.playerLife').show();
+      $('.moreInfo').toggleClass("col-md-offset-5");
+    }
     $('.playerMoney').show();
   }
 });
