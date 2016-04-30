@@ -18,24 +18,30 @@ var io = require('socket.io')(3001);
 //});
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
   res.render('index', {
-    title: 'Express'
+    'title' : "Express"
   });
 });
 
-router.get('/:channel/demo', function(req, res, next) {
-  res.render('demo', {
+router.get('/:channel', function (req, res, next) {
+  res.render('intro', {
     'channel': req.params.channel
   });
 });
 
-router.get('/:channel/team1', function(req, res, next) {
+router.get('/:channel/general', function (req, res, next) {
+  res.render('general', {
+    'channel': req.params.channel
+  });
+});
+
+router.get('/:channel/team1', function (req, res, next) {
   res.render('team1', {
     'channel' : req.params.channel
   });
 });
-router.get('/:channel/team2', function(req, res, next) {
+router.get('/:channel/team2', function (req, res, next) {
   res.render('team2', {
     'channel' : req.params.channel
   });
@@ -48,7 +54,7 @@ router.get('/:channel/mobile', function (req, res, next) {
 });
 
 
-router.post(CONFIG.POST_PAGE, function(req, res) {
+router.post(CONFIG.POST_PAGE, function (req, res) {
   try {
     // Headers verification
     // The data comes already parsed (application/json)
@@ -61,21 +67,21 @@ router.post(CONFIG.POST_PAGE, function(req, res) {
     // console.log(oldcsgo);
     var channel = csgo.auth.token;
     // Channel name must start with / and must contain only alphanumeric characters
-    if(!/^\/\w*$/.test(channel)){
+    if (!/^\/\w*$/.test(channel)) {
       return null;
     }
-    if(oldCsgo[channel] !== undefined){
-      if(oldCsgo[channel].provider.steamid != csgo.provider.steamid && oldCsgo[channel].provider.timestamp - csgo.provider.timestamp < 500){
+    if (oldCsgo[channel] !== undefined) {
+      if (oldCsgo[channel].provider.steamid != csgo.provider.steamid && oldCsgo[channel].provider.timestamp - csgo.provider.timestamp < 500) {
         return null;
       }
     }
-    if(oldCsgo[channel] === undefined){
+    if (oldCsgo[channel] === undefined) {
       oldCsgo[channel] = csgo;
     }
-
+    
     csgo.sortPlayersByTeam();
     // console.log(csgo);
-
+    
     sendBaseData(channel);
     // All the behaviour
     if (csgo.isWarmup()) {
@@ -88,7 +94,7 @@ router.post(CONFIG.POST_PAGE, function(req, res) {
               'text': 'Round ' + csgo.map.round + ' is on buytime.'
             });
             // If the tab doesn't have the focus, we notify the user the score on the freezetime phase.
-            io.of(channel).emit('notification',{
+            io.of(channel).emit('notification', {
               'text': csgo.logWinningTeam()
             });
             break;
@@ -108,7 +114,7 @@ router.post(CONFIG.POST_PAGE, function(req, res) {
             break;
         }
       }
-
+      
       if (csgo.isBombStatusChanged(oldCsgo[channel])) {
         if (csgo.round.bomb === 'planted') {
           io.of(channel).emit('info', {
@@ -159,17 +165,17 @@ function sendBaseData(channel) {
     'name': csgo.team.ct.name,
     'score': csgo.team.ct.score
   });
-
+  
   io.of(channel).emit('players', {
     'ct': csgo.getCTPlayers(),
     't': csgo.getTPlayers()
   });
-
-  io.of(channel).emit('bombStatus',{
+  
+  io.of(channel).emit('bombStatus', {
     'status' : csgo.round.bomb
   });
-
-  csgo.getPlayerImages(csgo, oldCsgo[channel]).then(function(res) {
+  
+  csgo.getPlayerImages(csgo, oldCsgo[channel]).then(function (res) {
     io.of(channel).emit('playersImages', {
       'players': csgo.players
     });

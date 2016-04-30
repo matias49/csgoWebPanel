@@ -14,10 +14,14 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <NodejsPort>3000</NodejsPort>
     <StartWebBrowser>True</StartWebBrowser>
+    <NameOfLastUsedPublishProfile>mmiramontnode</NameOfLastUsedPublishProfile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
   <ItemGroup>
+    <Content Include="views\index.jade" />
+    <Content Include="web.config" />
+    <None Include="mmiramontnode.pubxml" />
     <Content Include="reqSampleFile.txt" />
     <Content Include="package.json" />
     <Content Include="README.md" />
@@ -27,9 +31,9 @@
     <Compile Include="models\headers.js" />
     <Compile Include="routes\index.js" />
     <Content Include="views\mobile.jade" />
-    <Content Include="views\demo.jade" />
+    <Content Include="views\general.jade" />
     <Content Include="views\error.jade" />
-    <Content Include="views\index.jade" />
+    <Content Include="views\intro.jade" />
     <Content Include="views\layout.jade" />
     <Content Include="views\team1.jade" />
     <Content Include="views\team2.jade" />

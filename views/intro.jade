@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  div.container-fluid
+      div.row
+        h1 CSGO Web Panel
+      div.row
+        h3 You're about to join the game status. Please choose a theme.
+      div.row
+        div.col-md-6
+          a(href="#{channel}/demo") General Theme
+        div.col-md-6
+          a(href="#{channel}/team1") Team 1 Theme
+        div.col-md-6
+          a(href="#{channel}/team2") Team 2 Theme
+        div.col-md-6
+          a(href="#{channel}/mobile") Mobile Theme
+
