@@ -26,6 +26,7 @@
     <Compile Include="models\csgo.js" />
     <Compile Include="models\headers.js" />
     <Compile Include="routes\index.js" />
+    <Content Include="views\mobile.jade" />
     <Content Include="views\demo.jade" />
     <Content Include="views\error.jade" />
     <Content Include="views\index.jade" />

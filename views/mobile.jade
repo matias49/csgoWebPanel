@@ -1,0 +1,74 @@
+extends layout
+
+block content
+  div.container-fluid
+    div.row
+      div.col-xs-12.text-center
+        h2#status Status
+    div.row
+      div.col-xs-12.text-center
+        h4#map De_dust2
+    div.row
+      div.col-xs-12.text-center
+        img#bombIcon(src="")
+    div.row
+      div.col-xs-5.playersTeam#teamCT
+        div.text-center.teamInfo
+          div.row
+            h3.col-xs-12.teamName Team CT
+          div.row
+            h3.col-xs-12.teamScore 10
+        div.players
+          - for (var x = 0; x < 5; x++)
+            div.row.player(class='player'+x)
+              div.row
+                img.col-xs-5.playerImage(src="http://fakeimg.pl/100/")
+                div.col-xs-7
+                  div.playerInfo
+                    div.row
+                      p.playerName.col-xs-9 Matias49
+                    div.row
+                      p.playerMoney.text-right.col-xs-3 16000
+              div.row.text-center.no-padding
+                div.playerLife.col-xs-6.no-padding
+                  div.playerHealth.col-xs-6.no-padding
+                    div.col-xs-5.logo
+                      img(src="../images/healthicon.png")
+                    div.col-xs-7.value 30
+                  div.playerArmor.col-xs-6.no-padding
+                    div.col-xs-5
+                      img(src="../images/armorHeadicon.png")
+                    div.col-xs-7.value 30
+              div.row.col-md-6.moreInfo.no-padding.text-center.single 10/15/20
+      //- div.col-md-2#vs.hidden-xs.hidden-xm.text-center
+      //-   p VS
+      div.col-xs-5.col-xs-offset-1.playersTeam#teamT
+        div.row.text-center.teamInfo
+          h3.col-xs-6.teamName Team T
+          h3.col-xs-6.teamScore 14
+        div.players
+          - for (var x = 0; x < 5; x++)
+            div.row.player(class='player'+x)
+              div.row
+                div.col-xs-7
+                    div.row
+                      p.playerName.col-xs-9 Matias49
+                    div.row
+                      p.playerMoney.text-right.col-xs-3 16000
+                img.col-xs-5.playerImage(src="http://fakeimg.pl/100/")
+              div.row.text-center.no-padding
+                div.playerLife.col-xs-6.no-padding
+                  div.playerHealth.col-xs-6.no-padding
+                    div.col-xs-2.logo
+                      img(src="../images/healthicon.png")
+                    div.col-xs-7.value 30
+                  div.playerArmor.col-xs-6.no-padding
+                    div.col-xs-2.logo
+                      img(src="../images/armorHeadicon.png")
+                    div.col-xs-7.value 30
+              div.row.col-md-6.moreInfo.no-padding.text-center.single 10/15/20
+    div.row#log
+      p.col-md-1 Log : 
+      p.col-md-11#logText
+    div.row#copyright
+      p &copy; 2016 Matias49/KwaKze - Open Source, here is the GitHub repo!

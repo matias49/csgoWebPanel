@@ -41,6 +41,12 @@ router.get('/:channel/team2', function(req, res, next) {
   });
 });
 
+router.get('/:channel/mobile', function (req, res, next) {
+  res.render('mobile', {
+    'channel' : req.params.channel
+  });
+});
+
 
 router.post(CONFIG.POST_PAGE, function(req, res) {
   try {
