@@ -1,6 +1,6 @@
 var express = require('express');
 var headersModel = require('../models/headers');
-var csgoModel = require('../models/csgo');
+var csgoModel = require('csgo-gsi-model');
 var router = express.Router();
 var CONFIG = require('../config/config');
 var oldCsgo = [];
@@ -51,7 +51,7 @@ router.post(CONFIG.POST_PAGE, function(req, res) {
       return null;
     }
     // We keep the last information given to compare with the new one
-    csgo = new csgoModel(req.body);
+    csgo = new csgoModel(req.body, CONFIG.STEAM_API_KEY);
     // console.log(oldcsgo);
     var channel = csgo.auth.token;
     // Channel name must start with / and must contain only alphanumeric characters
