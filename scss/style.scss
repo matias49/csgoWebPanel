@@ -85,3 +85,22 @@ a {
 .no-padding{
   padding: 0;
 }
+
+#intro {
+    div {
+        img {
+            margin: 1rem 0;
+        }
+        .link {
+            text-align:center;
+            font-size : 2rem;
+            background-color: rgba(22, 27, 34,0.8);
+            border-radius:1rem;
+            padding-bottom:1rem;
+        }
+        a {
+            color:white;
+            text-decoration: none;
+        }
+    }
+}
