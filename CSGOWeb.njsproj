@@ -19,9 +19,11 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
   <ItemGroup>
+    <Content Include="public\images\themeGeneral.png" />
+    <Content Include="public\images\themeTeam1.png" />
+    <Content Include="public\images\themeTeam2.png" />
+    <Content Include="public\images\themeMobile.png" />
     <Content Include="views\index.jade" />
-    <Content Include="web.config" />
-    <None Include="mmiramontnode.pubxml" />
     <Content Include="reqSampleFile.txt" />
     <Content Include="package.json" />
     <Content Include="README.md" />
