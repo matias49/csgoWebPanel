@@ -13,11 +13,9 @@ block content
         img#bombIcon(src="")
     div.row
       div.col-xs-5.playersTeam#teamCT
-        div.text-center.teamInfo
-          div.row
-            h3.col-xs-12.teamName Team CT
-          div.row
-            h3.col-xs-12.teamScore 10
+        div.row.text-center.teamInfo
+          h3.col-xs-6.teamName Team CT
+          h3.col-xs-6.teamScore 10
         div.players
           - for (var x = 0; x < 5; x++)
             div.row.player(class='player'+x)
@@ -40,8 +38,6 @@ block content
                       img(src="../images/armorHeadicon.png")
                     div.col-xs-7.value 30
               div.row.col-md-6.moreInfo.no-padding.text-center.single 10/15/20
-      //- div.col-md-2#vs.hidden-xs.hidden-xm.text-center
-      //-   p VS
       div.col-xs-5.col-xs-offset-1.playersTeam#teamT
         div.row.text-center.teamInfo
           h3.col-xs-6.teamName Team T
@@ -51,6 +47,7 @@ block content
             div.row.player(class='player'+x)
               div.row
                 div.col-xs-7
+                  div.playerInfo
                     div.row
                       p.playerName.col-xs-9 Matias49
                     div.row
