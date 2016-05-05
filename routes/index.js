@@ -32,6 +32,8 @@ router.get('/:channel', function (req, res, next) {
 
 router.get('/:channel/general', function (req, res, next) {
   res.render('general', {
+    'siteUrl': CONFIG.SOCKET_URL,
+    'socketPort' : CONFIG.SOCKET_PORT,
     'channel': req.params.channel
   });
 });
