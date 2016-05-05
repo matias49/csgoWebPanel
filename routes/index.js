@@ -150,7 +150,7 @@ router.post(CONFIG.POST_PAGE, function (req, res) {
   } catch (e) {
     console.error("DEBUG");
     console.log(e);
-    console.log(req.body);
+    //console.log(req.body);
     io.of(channel).emit('noData');
   }
 })
