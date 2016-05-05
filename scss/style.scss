@@ -37,6 +37,7 @@ a {
   font-size: 3rem;
 }
 .dead {
+  -webkit-filter : brightness(15%);
   filter: brightness(15%);
 }
 .playerInfo p {
