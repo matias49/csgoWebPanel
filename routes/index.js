@@ -7,7 +7,7 @@ var oldCsgo = [];
 var csgo;
 
 // We set the socket port
-var io = require('socket.io')(3001);
+var io = require('socket.io')(CONFIG.SOCKET_PORT);
 
 //io.on('connection', function(socket) {
 //  var path = socket.request.headers.referer.match(/\/\w+\//g)[0].match(/\/\w+/g);
@@ -26,23 +26,31 @@ router.get('/', function(req, res, next) {
 
 router.get('/:channel/demo', function(req, res, next) {
   res.render('demo', {
+    'siteUrl': CONFIG.SOCKET_URL,
+    'socketPort' : CONFIG.SOCKET_PORT,
     'channel': req.params.channel
   });
 });
 
 router.get('/:channel/team1', function(req, res, next) {
   res.render('team1', {
+    'siteUrl': CONFIG.SOCKET_URL,
+    'socketPort' : CONFIG.SOCKET_PORT,
     'channel' : req.params.channel
   });
 });
 router.get('/:channel/team2', function(req, res, next) {
   res.render('team2', {
+    'siteUrl': CONFIG.SOCKET_URL,
+    'socketPort' : CONFIG.SOCKET_PORT,
     'channel' : req.params.channel
   });
 });
 
 router.get('/:channel/mobile', function (req, res, next) {
   res.render('mobile', {
+    'siteUrl': CONFIG.SOCKET_URL,
+    'socketPort' : CONFIG.SOCKET_PORT,
     'channel' : req.params.channel
   });
 });
