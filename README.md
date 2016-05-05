@@ -1,10 +1,11 @@
 # CSGOWebPanel
-A nodeJS project to give all CSGO's game informations as a spectator on a single web page. Created using the [Game State Integration (GSI)](https://developer.valvesoftware.com/wiki/Counter-Strike:_Global_Offensive_Game_State_Integration).
+A NodeJS project to give all CSGO's game informations for a spectator on a single web page. Created using the [Game State Integration (GSI)](https://developer.valvesoftware.com/wiki/Counter-Strike:_Global_Offensive_Game_State_Integration).
 
 ## Features
-- Provide a web view with all the important information of a CSGO game as a spectator
+- Provide multiple web views with all the important information of a CSGO game for a spectator.
+- Multiple users can send their data to a unique instance of the application.
 - Real time. You don't need to refresh to get the lastest data.
-- More developed soon.
+- Easy customization.
 
 ## Why this program?
 We were discovering nodeJS at school. We had to make a project using this language. As CSGO's fans, we decided to use the Game State Integration Valve added to make something with.
@@ -31,6 +32,7 @@ node bin/www
 ```
 
 By default, you can access it from http://localhost:3000
+The channel is found by the Auth token of the source. I.e this token is "/hello", you can access the data of this source via http://localhost:3000/hello
 
 ## Use as a remote app
 - Change the socket IP on /public/javascripts/app.js with the corresponding IP.
@@ -45,6 +47,8 @@ docker build -t image/name .
 ```
 ### Tools/languages used
 - Javascript.
-- Atom for developing.
-- Jade for the HTML template.
+- Atom & Visual Studio for developing.
+- Jade / Pug for the HTML template.
 - Socket.IO for the real-time data.
+
+## More information can be found on the wiki
