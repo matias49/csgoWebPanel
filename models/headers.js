@@ -26,7 +26,7 @@ Headers.prototype.isValidCSGO = function(){
  * @return {boolean} true if both IPs matches, false otherwise
  */
 Headers.prototype.isValidIp = function(){
-    if(this.ip === CONFIG.IP){
+    if(this.ip === CONFIG.SENDER_IP){
         return true;
     }
     return false;

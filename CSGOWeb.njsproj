@@ -29,7 +29,6 @@
     <Content Include="README.md" />
     <Compile Include="app.js" />
     <Compile Include="config\config.js" />
-    <Compile Include="models\csgo.js" />
     <Compile Include="models\headers.js" />
     <Compile Include="routes\index.js" />
     <Content Include="views\mobile.jade" />
